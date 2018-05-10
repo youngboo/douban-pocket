@@ -1,0 +1,13 @@
+.bottom {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 10%;
+}
+.bottom span{
+    display: inline;
+    width:33%;
+}
+.bottom span a{
+    font-size: 10px;
+}

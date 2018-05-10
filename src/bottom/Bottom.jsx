@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
-import './style.css';
+import React, { Component } from 'react'
+import './style.css'
 
-class App extends Component {
-
-    render() {
-        return (
-	        <div className="app">
-                <h1>从零开发口袋豆瓣</h1>
-	        </div>
-        );
-    }
+class Bottom extends Component {
+  render () {
+    return (
+      <div className='bottom'>
+        <span><a href='#'>图书</a></span>
+        <span><a href='#'>电影</a></span>
+        <span><a href='#'>音乐</a></span>
+      </div>
+    )
+  }
 }
 
-module.exports = App;
-
-
+module.exports = Bottom
