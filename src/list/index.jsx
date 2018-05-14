@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Item from './item';
-
+import './style.css'
 class List extends Component {
     constructor(props) {
         super(props)
