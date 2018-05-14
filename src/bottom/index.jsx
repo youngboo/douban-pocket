@@ -13,4 +13,4 @@ class Bottom extends Component {
   }
 }
 
-module.exports = Bottom
+export default Bottom

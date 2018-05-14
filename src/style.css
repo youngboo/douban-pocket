@@ -11,4 +11,5 @@ h1 {
 .app {
     max-width: 1200px;
     height: 100%;
+    text-align: center
 }
