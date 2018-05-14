@@ -8,22 +8,25 @@ class AsynListService{
         this.initResource()
     }
     /**
-     * 异步获取list参数
+     * 异步获取
      * 组合cache获取和远程请求，对每次请求做缓存
-     * @param {*} value 
+     * @param {*} url 
      */
-    findBooksBySearch(value){
+    findBooksBySearch(url){
         
         return new Promise(function(resolve,reject){
-            var content = Util.getCacheByKey(value)
+            let content = Util.getCacheByKey(url)
+            console.log(content)
             if(!content){
-                Util.getJsonp(value)
+                console.log('没有缓存'+content+":"+url)
+                Util.getJsonp(url)
                 .then((myJson)=>{
+                    Util.cache(url,JSON.stringify(myJson))
                     resolve(myJson)
-                    Util.cache(value,myJson)
+                    
                 })
                 }else{
-                    resolve(content)
+                    resolve(JSON.parse(content))
                 }
         })
         

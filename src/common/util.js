@@ -50,7 +50,7 @@ class Util{
     localStorage.setItem(key,value)
   }
   static getCacheByKey(key){
-    localStorage.getItem(key)
+    return localStorage.getItem(key)
   }
   static removeCache(key){
     localStorage.removeItem(key)

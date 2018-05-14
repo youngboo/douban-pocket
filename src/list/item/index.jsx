@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import './style.css'
 class Item extends Component {
     constructor(props) {
         super(props)
@@ -12,10 +12,10 @@ class Item extends Component {
     render() {
         var item = this.props.item
         return (
-            <div key={item.id} onClick={this.handleClickItem.bind(this)}>
+            <div className='list-item' key={item.id} onClick={this.handleClickItem.bind(this)}>
                     {item.id}:
                     {item.title}:
-                    <img src={item.images.small} />
+                    <img src={item.image} />
             </div>
         )
     }

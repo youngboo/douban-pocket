@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import Util from '../util/util'
-import CONFIG from '../util/config'
 class Search extends Component{
     constructor(){
         super()
@@ -11,8 +9,7 @@ class Search extends Component{
     }
     
     handleClick(){
-        var value = this.input.value
-        this.props.onChange(CONFIG.book_search+value)
+        this.props.onChange(this.input.value)
     }
     render(){
         return(
