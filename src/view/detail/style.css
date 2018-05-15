@@ -1,0 +1,12 @@
+.detail image{
+    width:100px;
+    height:100px;
+}
+.detail_hidden{
+   display:none;
+}
+.detail_active{
+    display: block;
+    width:100%;
+    height:100%;
+}

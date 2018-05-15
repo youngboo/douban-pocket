@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import SEARCH_TYPE from '../common/enum'
+import SEARCH_TYPE from '../../js/common/enum'
 import Type from './type';
 import './style.css'
 class Bottom extends Component {

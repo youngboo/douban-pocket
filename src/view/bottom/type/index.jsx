@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import SEARCH_TYPE from '../../common/enum'
 class Type extends Component {
   handleTypeClick(){
     this.props.onChange(this.props.item.index)

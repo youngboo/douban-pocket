@@ -3,11 +3,11 @@ import './style.css'
 class Item extends Component {
     constructor(props) {
         super(props)
-        
-    }
-  
-    handleClickItem(id){
 
+    }
+
+    handleClickItem(){
+        this.props.onChange(this.props.item.id)
     }
     render() {
         var item = this.props.item
