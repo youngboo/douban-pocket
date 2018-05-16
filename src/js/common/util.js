@@ -7,6 +7,7 @@ class Util{
     return new Promise(function(resolve,reject){
       fetchJsonp(url)
       .then((response)=>{
+          console.log(response)
         resolve(response.json())
       })
       .catch(e=>reject(e))

@@ -10,6 +10,9 @@ h1 {
 }
 .app {
     max-width: 1200px;
-    height: 100%;
-    text-align: center
+    min-height: 500px;
+}
+.list-container{
+    max-height: 1024px;
+   overflow:scroll;
 }

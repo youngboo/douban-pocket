@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
-import SEARCH_TYPE from '../../js/common/enum'
-import Type from './type';
+import {TYPE_LIST} from '../../js/common/config'
 import './style.css'
+import { Sticky, Icon, Grid } from 'semantic-ui-react'
 class Bottom extends Component {
   constructor(props){
     super(props)
-    this.list = SEARCH_TYPE.map((item,index)=>{
+    this.list = TYPE_LIST.map((item,index)=>{
       return(
-        <Type key={index} item={item} onChange={this.handleChange.bind(this)}/>
+          <Grid.Column  key={index} onClick={()=>{this.props.onChange(index)}} >
+              <Icon name={item.icon}/>
+              <br/>
+              {item.name}
+              </Grid.Column>
       )
     })
   }
@@ -16,9 +20,9 @@ class Bottom extends Component {
   }
   render () {
     return (
-      <div className='bottom'>
+      <Grid centered columns={3} >
         {this.list}
-      </div>
+      </Grid>
     )
   }
 }

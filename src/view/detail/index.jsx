@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './style.css'
+import { Card, Header, Image } from 'semantic-ui-react'
 class Detail extends Component {
     constructor(props) {
         super(props)
@@ -17,10 +18,27 @@ class Detail extends Component {
     }
 
     render() {
+        let info = this.props.active
+        let active = this.props.active?true:false
 
         return (
-            <div className={this.props.active?'detail_active':'detail_hidden'}>
-                {this.getDetail(this.props.info)}
+            <div className={active?'detail_active':'detail_hidden'}>
+                <Card>
+                    <Image src={info.image}/>
+                    <Card.Content>
+                        <Card.Header>
+                            {info.title}
+                        </Card.Header>
+                        <Card.Meta>
+                            <span className='date'>
+                                {info.pubdate}
+                            </span>
+                        </Card.Meta>
+                        <Card.Description>
+                            {info.summary}
+                        </Card.Description>
+                    </Card.Content>
+                </Card>
             </div>
         )
     }

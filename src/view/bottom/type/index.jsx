@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Menu} from 'semantic-ui-react'
 class Type extends Component {
   handleTypeClick(){
     this.props.onChange(this.props.item.index)
@@ -6,7 +7,7 @@ class Type extends Component {
   render () {
     let item = this.props.item
     return (
-      <a href='#'><span  onClick={this.handleTypeClick.bind(this)} icon={item.icon}>{item.name}</span></a>
+      <Menu.Item onClick={this.handleTypeClick.bind(this)}>{item.name}</Menu.Item>
     )
   }
 }

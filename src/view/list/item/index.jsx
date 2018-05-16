@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './style.css'
-class Item extends Component {
+import {Item} from 'semantic-ui-react'
+class ListItem extends Component {
     constructor(props) {
         super(props)
 
@@ -12,12 +13,15 @@ class Item extends Component {
     render() {
         var item = this.props.item
         return (
-            <div className='list-item' key={item.id} onClick={this.handleClickItem.bind(this)}>
-                    {item.id}:
-                    {item.title}:
-                    <img src={item.image} />
-            </div>
+            <Item className='list-item' key={item.id} onClick={this.handleClickItem.bind(this)}>
+                <Item.Image size='tiny' src={item.image} />
+                <Item.Content>
+                    <Item.Header >{item.title}</Item.Header>
+                    <Item.Meta>{item.id}</Item.Meta>
+                    <Item.Extra>Additional Details</Item.Extra>
+                </Item.Content>
+            </Item>
         )
     }
 }
-export default Item
+export default ListItem
