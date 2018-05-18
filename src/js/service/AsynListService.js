@@ -1,5 +1,6 @@
 import Util from "../common/util";
 import Page from '../model/page'
+import { CONFIG } from '../common/config'
 
 /**
  * 异步资源获取服务
@@ -67,6 +68,13 @@ class AsynListService{
                 resolve(JSON.parse(content))
             }
         })
+    }
+    getDetailById(id){
+        let url = CONFIG.book_detail+id
+        return this.getDetailByUrl(url)
+    }
+    refreshData(){
+
     }
 
    static getInstance(){

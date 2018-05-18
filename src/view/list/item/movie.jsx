@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './style.css'
 import {Item} from 'semantic-ui-react'
-class Music extends Component {
+class Movie extends Component {
     constructor(props) {
         super(props)
 
@@ -9,15 +9,15 @@ class Music extends Component {
     render() {
         var item = this.props.item
         return (
-            <Item>
-                <Item.Image size='tiny' src={item.image} />
+                <Item key={this.props.key}>
+                <Item.Image size='tiny' src={item.images.small} />
                 <Item.Content>
                     <Item.Header >{item.title}</Item.Header>
-                    <Item.Meta>{item.title}</Item.Meta>
-                    <Item.Extra>{item.attrs[0]}</Item.Extra>
+                    <Item.Meta>{item.id}</Item.Meta>
+                    <Item.Extra>{item.year}|{item.genres[0]}</Item.Extra>
                 </Item.Content>
-            </Item>
+                </Item>
         )
     }
 }
-export default Music
+export default Movie

@@ -1,64 +1,60 @@
 import React, { Component } from 'react'
-import ListItem from './item';
 import './style.css'
-import {Item,Modal,Button,Image,Header} from 'semantic-ui-react'
+import ItemRender from './item-render/index'
+import Book from './item/book'
+import Movie from './item/movie'
+import Music from './item/index'
+import { Ref, Segment,Item } from 'semantic-ui-react'
 import AsynListService from '../../js/service/AsynListService'
-import Detail from '../detail/index'
-import Util from '../../js/common/util'
+import { TYPE_LIST } from '../../js/common/config'
+import { Link } from 'react-router-dom'
+const service = AsynListService.getInstance()
 class List extends Component {
     constructor(props) {
         super(props)
         this.items = [];
-        this.temp = this.props.temp
-        this.state= {detail:''}
-        this.service = AsynListService.getInstance()
     }
   handleItemChange(value){
         this.props.onChange(value)
 
   }
-  onItemClick(url) {
 
-      this.service.getDetailByUrl(url)
-          .then((json) => {
-          console.log(json)
-            this.setState({
-                detail:json
-            })
-          })
-  }
     render() {
+        let itemRender
+        if (this.props.items&&this.props.items.length>0) {
+            // switch(this.props.tmpl){
+            //     case 'book':
+            //         itemRender =<ItemRender items={this.props.items} render={(item,key)=>(<Book item={item} key={key}/>)}/>
+            //     break
+            //     case 'film':
+            //         itemRender =<ItemRender items={this.props.items} render={(item,key)=>(<Movie item={item} key={key}/>)}/>
+            //         break
+            //     case 'music':
+            //         itemRender =<ItemRender items={this.props.items} render={(item,key)=>(<Music item={item} key={key}/>)}/>
+            //         break
+            // }
+            //this.props.items.map()
+            itemRender =  this.props.items.map((item)=>{
 
-        if (this.props.items) {
-           this.items = this.props.items.map((item, index) => {
-                //return(<ListItem onChange={this.handleItemChange.bind(this)} key={index} item={item}/>)
-                // items.push({
-                //     childKey:index,
-                //     image:item.image,
-                //     header:item.title,
-                //     meta:item.id
-                // })
-                return(
-                    <Item className='list-item' key={item.id} onClick={()=>this.onItemClick(item.url)}>
-                        <Item.Image size='tiny' src={item.image} />
-                        <Item.Content>
-                            <Item.Header >{item.title}</Item.Header>
-                            <Item.Meta>{item.id}</Item.Meta>
-                            <Item.Extra>Additional Details</Item.Extra>
-                        </Item.Content>
-                    </Item>
+                return (
+                    <Link to={'/detail/'+item.id}>
+                        {this.props.tmpl.call(this,item)}
+                    </Link>
+
                 )
+
             })
-        }
+
+
+           }
 
         return (
-            <div>
-                <Item.Group >
-                    {this.items}
-                </Item.Group>
-                <Detail active={this.state.detail}/>
-            </div>
 
+            <Segment className='list'>
+                <Item.Group>
+                    {itemRender}
+                </Item.Group>
+            </Segment>
 
         )
     }

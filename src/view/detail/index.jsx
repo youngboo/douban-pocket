@@ -1,28 +1,22 @@
 import React, { Component } from 'react'
 import './style.css'
-import { Card, Header, Image } from 'semantic-ui-react'
+import { Button, Card, Image, Segment } from 'semantic-ui-react'
 class Detail extends Component {
     constructor(props) {
         super(props)
+        console.log(this.props.match.params.id)
     }
-    getDetail(info){
-        console.log(info)
-        if(info){
-            return( <div>
-                <div>
-                    <image src={info.image}></image>
-                </div>
-            </div>)
-        }
 
-    }
+
+
 
     render() {
         let info = this.props.active
-        let active = this.props.active?true:false
 
+        let active = this.props.active?true:false
         return (
             <div className={active?'detail_active':'detail_hidden'}>
+                <Segment textAlign='center'>
                 <Card>
                     <Image src={info.image}/>
                     <Card.Content>
@@ -39,6 +33,8 @@ class Detail extends Component {
                         </Card.Description>
                     </Card.Content>
                 </Card>
+                    <Button onClick={()=>this.props.onChange(false)}>关闭</Button>
+                </Segment>
             </div>
         )
     }

@@ -7,7 +7,7 @@ class Bottom extends Component {
     super(props)
     this.list = TYPE_LIST.map((item,index)=>{
       return(
-          <Grid.Column  key={index} onClick={()=>{this.props.onChange(index)}} >
+          <Grid.Column textAlign='center' key={index} onClick={()=>{this.props.onChange(index)}} >
               <Icon name={item.icon}/>
               <br/>
               {item.name}
@@ -20,6 +20,7 @@ class Bottom extends Component {
   }
   render () {
     return (
+
       <Grid centered columns={3} >
         {this.list}
       </Grid>
