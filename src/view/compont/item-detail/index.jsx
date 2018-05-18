@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './style.css'
-import { Card, Image, Segment } from 'semantic-ui-react'
+import { Segment } from 'semantic-ui-react'
 import AsynListService from '../../../js/service/AsynListService'
 import { Link } from 'react-router-dom'
 import { TYPE_LIST } from '../../../js/common/config'
@@ -9,8 +9,8 @@ class ItemDetail extends Component {
         super(props)
         this.state = {info:{}}
         this.service = AsynListService.getInstance()
-        let id = this.props.match.params.id
-        this.service.getDetailById(id)
+        this.data = this.props.location.state
+        this.service.getDetailById(this.data.type,this.data.id)
             .then(json=>{
                 this.setState({
                     info:json
@@ -18,34 +18,11 @@ class ItemDetail extends Component {
             })
     }
 
-
-
-
     render() {
         let info = this.state.info
         let view = undefined
         if(info){
-            // view =
-            //     <Segment basic textAlign='center'>
-            //         <Card centered fluid>
-            //             <Image src={info.image}/>
-            //             <Card.Content>
-            //                 <Card.Header>
-            //                     {info.title}
-            //                 </Card.Header>
-            //                 <Card.Meta>
-            //                 <span className='date'>
-            //                     {info.pubdate}
-            //                 </span>
-            //                 </Card.Meta>
-            //                 <Card.Description>
-            //                     {info.summary}
-            //                 </Card.Description>
-            //             </Card.Content>
-            //         </Card>
-            //     </Segment>
-            view = TYPE_LIST[0].detail_tmpl.call(this,info)
-
+            view = TYPE_LIST[this.data.index].detail_tmpl.call(this,info)
         }else{
             view =
                 <Segment>

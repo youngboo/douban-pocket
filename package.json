@@ -1,5 +1,5 @@
 {
-  "name": "project",
+  "name": "douban",
   "version": "1.0.0",
   "description": "",
   "main": "dist/bundle.js",
@@ -9,7 +9,7 @@
     "build": "webpack"
   },
   "keywords": [],
-  "author": "Kevin",
+  "author": "youngboo",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.25.0",

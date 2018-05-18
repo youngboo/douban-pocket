@@ -1,9 +1,10 @@
-import Movie from '../../view/list/item/movie'
 import React from 'react'
 import { Card, Image, Item, Segment } from 'semantic-ui-react'
 const CONFIG = {
     default:0,
-    book_detail:'https://api.douban.com/v2/book/',
+    book:'https://api.douban.com/v2/book/',
+    movie:'https://api.douban.com/v2/movie/',
+    music:'https://api.douban.com/v2/music/',
     book_search:'https://api.douban.com/v2/book/search?q=',
     movie_search:'https://api.douban.com/v2/movie/search?q=',
     music_search:'https://api.douban.com/v2/music/search?q=',
@@ -12,6 +13,7 @@ const TYPE_LIST =[
     {
         index:0,
         icon:'book',
+        type:'book',
         url:CONFIG.book_search,
         name:'书',
         list_tmpl:(item)=>{
@@ -48,12 +50,12 @@ const TYPE_LIST =[
         ),
         list_name:'books'
     },
-    {index:1,icon:'film',url:CONFIG.movie_search,name:'电影',
+    {index:1,type:'movie',icon:'film',url:CONFIG.movie_search,name:'电影',
 
         list_name:'subjects',
         list_tmpl:''
     },
-    {index:2,icon:'music',url:CONFIG.music_search,name:'音乐',
+    {index:2,type:'music',icon:'music',url:CONFIG.music_search,name:'音乐',
         list_name:'musics'},
 ]
 

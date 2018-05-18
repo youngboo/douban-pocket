@@ -69,8 +69,8 @@ class AsynListService{
             }
         })
     }
-    getDetailById(id){
-        let url = CONFIG.book_detail+id
+    getDetailById(name,id){
+        let url = CONFIG[name]+id
         return this.getDetailByUrl(url)
     }
     refreshData(){

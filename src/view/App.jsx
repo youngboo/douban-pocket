@@ -4,11 +4,9 @@ import Bottom from './bottom/index'
 import List from './list/index'
 import Search from './search/index'
 import ListService from '../js/service/AsynListService'
-import Detail from './detail/index'
 import {CONFIG,TYPE_LIST} from '../js/common/config'
-import { Container, Header, Rail, Responsive, Segment } from 'semantic-ui-react'
-import PushRefresh from './compont/push-refresh/index'
-import { Route } from 'react-router-dom'
+import { Header} from 'semantic-ui-react'
+
 
 const service = ListService.getInstance()
 class App extends Component {
@@ -57,18 +55,11 @@ class App extends Component {
             <main>
                 <Header content='口袋豆瓣'/>
                 <Search onChange={this.handleSearchChange.bind(this)}/>
-                    <List tmpl={this.type.list_tmpl} type={this.type.list_name} onChange={this.handleItemClick.bind(this)} items={this.state.items}/>
+                    <List tmpl={this.type.list_tmpl} type={this.type.type} index={this.type.index} onChange={this.handleItemClick.bind(this)} items={this.state.items}/>
             </main>
             <footer>
                 <Bottom default={this.default} onChange={this.switchType.bind(this)}/>
             </footer>
-            {/*<nav>*/}
-                {/*<ul>*/}
-                    {/*<li><Link to='/detail'>detail</Link></li>*/}
-                {/*</ul>*/}
-            {/*</nav>*/}
-            {/**/}
-        {/*<Detail active={this.state.active} onChange={(value)=>{this.setState({active:value})}}/>*/}
         </div>
     )
   }
