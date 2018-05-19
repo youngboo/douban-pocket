@@ -21,7 +21,7 @@ class Bottom extends Component {
   render () {
     return (
 
-      <Grid centered columns={3} >
+      <Grid centered columns={TYPE_LIST.length} >
         {this.list}
       </Grid>
     )

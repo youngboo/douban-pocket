@@ -6,6 +6,7 @@ import Search from './search/index'
 import ListService from '../js/service/AsynListService'
 import {CONFIG,TYPE_LIST} from '../js/common/config'
 import { Header} from 'semantic-ui-react'
+import ExampleList from './compont/pullload/index'
 
 
 const service = ListService.getInstance()
@@ -15,14 +16,15 @@ class App extends Component {
      this.typeList = TYPE_LIST
     this.state = {items:[],active:false,info:{}}
     this.type = this.typeList[CONFIG.default]
+      this.url = ''
+
   }
 
   handleSearchChange(searchValue){
     this.searchValue = searchValue
-    let url = this.getSearchUrl(searchValue)
-    service.findByType(url,this.type.list_name)
+    this.url = this.getSearchUrl(searchValue)
+    service.findByType(this.url,this.type.list_name)
     .then((page)=>{
-
       this.type.page = page
       this.setState({
         items:this.type.page.list
@@ -40,22 +42,57 @@ class App extends Component {
       this.type = this.typeList[type]
       this.handleSearchChange(this.searchValue)
   }
-    handleItemClick(url){
-       service.getDetailByUrl(url)
-           .then((json) => {
-               this.setState({
-                   active:json
-               })
-           })
+    handleListChange(url,name){
+      console.log(url)
+      if(name==='pull'){
+          this.handlePullData(url)
+      }else{
+          this.handleRefreshData(url)
+      }
 
+
+    }
+    handlePullData(url){
+        service.pullData(url,this.type.page,this.type.list_name)
+            .then((page)=>{
+                if(this.type.page != page){
+                    this.type.page = page
+                    this.setState({
+                        items:this.type.page.list
+                    })
+                }
+
+            })
+    }
+    handleRefreshData(url){
+        service.refreshData(url,this.type.list_name)
+            .then((page)=>{
+                if(this.type.page != page){
+                    this.type.page = page
+                    this.setState({
+                        items:this.type.page.list
+                    })
+                }
+
+            })
     }
   render () {
     return (
         <div className='app'>
-            <main>
+            <header>
                 <Header content='口袋豆瓣'/>
+            </header>
+            <main>
+
                 <Search onChange={this.handleSearchChange.bind(this)}/>
-                    <List tmpl={this.type.list_tmpl} type={this.type.type} index={this.type.index} onChange={this.handleItemClick.bind(this)} items={this.state.items}/>
+                    <List onChange={this.handleListChange.bind(this)}
+                          tmpl={this.type.list_tmpl}
+                          type={this.type.type_name}
+                          index={this.type.index}
+                          items={this.state.items}
+                          url={this.url}
+                    />
+                    {/*<ExampleList/>*/}
             </main>
             <footer>
                 <Bottom default={this.default} onChange={this.switchType.bind(this)}/>

@@ -13,10 +13,6 @@ class PushRefresh extends Component {
             height:0
         }
     }
-  handleItemChange(value){
-        this.props.onChange(value)
-
-  }
     handleTouchStart(e){
 
       console.log("开始拖拽",e.clientY,e)

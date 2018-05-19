@@ -1,0 +1,13 @@
+.loda-text{
+
+
+}
+.load-text-display{
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    display: block;
+}
+.load-text-hidden{
+    display:none
+}

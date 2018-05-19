@@ -10,6 +10,8 @@ class AsynListService{
     constructor(){
         this.initResource()
     }
+
+
     /**
      * 异步获取
      * 组合cache获取和远程请求，对每次请求做缓存
@@ -41,7 +43,7 @@ class AsynListService{
                 Util.getJsonp(url)
                     .then((myJson)=>{
                         let list = myJson[name]
-                        let page = new Page(myJson.start,myJson.end,myJson.total,list)
+                        let page = new Page(myJson.start,myJson.count,myJson.total,list)
                         Util.cache(url,JSON.stringify(page))
                         resolve(page)
 
@@ -55,7 +57,6 @@ class AsynListService{
     getDetailByUrl(url){
         return new Promise((resolve,reject)=>{
             let content = Util.getCacheByKey(url)
-            console.log(url)
             if(!content || content == ''){
                 Util.getJsonp(url)
                     .then((myJson)=>{
@@ -73,7 +74,35 @@ class AsynListService{
         let url = CONFIG[name]+id
         return this.getDetailByUrl(url)
     }
-    refreshData(){
+    refreshData(url,name){
+        return new Promise((function (resolve,reject) {
+            Util.getJsonp(url)
+                .then((myJson)=>{
+                    let list = myJson[name]
+                    let page = new Page(myJson.start,myJson.count,myJson.total,list)
+                    Util.cache(url,JSON.stringify(page))
+                    resolve(page)
+
+                })
+                .catch((e)=>reject(e))
+        }))
+    }
+    pullData(url,page,name){
+        return new Promise(function (resolve,reject) {
+            let pageCount = page.list.length
+            let pageEnd = pageCount + page.start
+            let newUrl = url + '&start='+pageEnd+'&count='+pageCount
+            Util.getJsonp(newUrl)
+                .then((myJson)=>{
+                    let list = page.list.concat(myJson[name])
+                    let newPage = new Page(page.start,list.length,myJson.total,list)
+                    Util.cache(url,JSON.stringify(newPage))
+                    resolve(newPage)
+                })
+                .catch((e)=>reject(e))
+        })
+
+
 
     }
 

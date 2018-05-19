@@ -1,8 +1,5 @@
 import fetchJsonp from 'fetch-jsonp'
 class Util{
-  constructor(){
-    this.xhr = new XMLHttpRequest()
-  }
   static getJsonp(url){
     return new Promise(function(resolve,reject){
       fetchJsonp(url)
@@ -16,7 +13,8 @@ class Util{
   static fetchGet(url){
     return new Promise(function(resolve,reject){
       fetch(url)
-      .then(response=>console.log(response))
+      .then(response=>resolve(response))
+          .catch((e)=>reject(e))
     })
   }
   static cache(key,value){
@@ -27,6 +25,13 @@ class Util{
   }
   static removeCache(key){
     localStorage.removeItem(key)
+  }
+  static looptimes(num,callback){
+
+      for(var i=0;i<num;i++){
+         callback(i)
+      }
+
   }
 }
 export default Util

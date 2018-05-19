@@ -1,7 +1,7 @@
 class Page{
-    constructor (start,end,total,list){
+    constructor (start,count,total,list){
         this.start = start
-        this.end = end
+        this.count = count
         this.total = total
         this.list = list
     }
