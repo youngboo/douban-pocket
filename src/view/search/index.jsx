@@ -19,12 +19,10 @@ class Search extends Component{
     }
     render(){
         return(
-            <Segment basic>
                 <Input fluid action focus={true} placeholder={this.holder}>
                     <input defaultValue='a' ref={input=>this.input=input}/>
                     <Button onClick={this.handleInputChange.bind(this)} type='submit'>搜索</Button>
                 </Input>
-            </Segment>
         )
     }
 }

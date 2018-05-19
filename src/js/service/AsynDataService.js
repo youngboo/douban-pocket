@@ -5,7 +5,7 @@ import { CONFIG } from '../common/config'
 /**
  * 异步资源获取服务
  */
-class AsynListService{
+class AsynDataService{
 
     constructor(){
         this.initResource()
@@ -108,7 +108,7 @@ class AsynListService{
 
    static getInstance(){
         if(!this.service){
-            this.service = new AsynListService()
+            this.service = new AsynDataService()
         }
         return this.service
     }
@@ -116,4 +116,4 @@ class AsynListService{
 
     }
 }
-export default AsynListService
+export default AsynDataService

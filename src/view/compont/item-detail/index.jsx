@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import './style.css'
 import { Icon, Menu, Segment } from 'semantic-ui-react'
-import AsynListService from '../../../js/service/AsynListService'
+import AsynDataService from '../../../js/service/AsynDataService'
 import { Link } from 'react-router-dom'
 import { TYPE_LIST } from '../../../js/common/config'
 class ItemDetail extends Component {
     constructor(props) {
         super(props)
         this.state = {info:null}
-        this.service = AsynListService.getInstance()
+        this.service = AsynDataService.getInstance()
         this.data = this.props.location.state
 
         this.service.getDetailById(this.data.type,this.data.id)

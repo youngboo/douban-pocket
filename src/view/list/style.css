@@ -1,4 +1,5 @@
-.list .segment{
+.list{
     overflow: hidden;
+    text-align: center;
 }
 

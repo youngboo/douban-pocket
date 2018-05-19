@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, Grid, Image, Item, Segment } from 'semantic-ui-react'
 import Util from './util'
+import { Link } from 'react-router-dom'
 const CONFIG = {
     default:0,
     book:'https://api.douban.com/v2/book/',
@@ -17,15 +18,17 @@ const TYPE_LIST =[
         type_name:'book',
         url:CONFIG.book_search,
         name:'书',
-        list_tmpl:(item)=>{
+        list_tmpl:(item,self)=>{
             return(
-                    <Item key={item.id}>
+                    <Item key={item.id} onClick={self.handleItemClick.bind(self,item.id)}>
                         <Item.Image size='tiny' src={item.image} />
+
                         <Item.Content>
                             <Item.Header >{item.title}</Item.Header>
                             <Item.Meta>{item.id}</Item.Meta>
                             <Item.Extra>Additional Details</Item.Extra>
                         </Item.Content>
+
                     </Item>
             )
         },
@@ -61,7 +64,7 @@ const TYPE_LIST =[
                     <Item.Content>
                         <Item.Header >{item.title}</Item.Header>
                         <Item.Meta>{item.id}</Item.Meta>
-                        <Item.Extra>{item.year}|{item.genres[0]}</Item.Extra>
+                        <Item.Extra>{item.year}</Item.Extra>
                     </Item.Content>
                 </Item>
             )
@@ -103,12 +106,12 @@ const TYPE_LIST =[
         list_name:'musics',
         list_tmpl:(item)=>{
             return(
-                <Item>
+                <Item  key={item.id}>
                     <Item.Image size='tiny' src={item.image} />
                     <Item.Content>
                         <Item.Header >{item.title}</Item.Header>
                         <Item.Meta>{item.title}</Item.Meta>
-                        <Item.Extra>{item.attrs[0]}</Item.Extra>
+                        <Item.Extra>{item.author[0].name}</Item.Extra>
                     </Item.Content>
                 </Item>
             )

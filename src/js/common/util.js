@@ -4,7 +4,6 @@ class Util{
     return new Promise(function(resolve,reject){
       fetchJsonp(url)
       .then((response)=>{
-          console.log(response)
         resolve(response.json())
       })
       .catch(e=>reject(e))
@@ -26,6 +25,7 @@ class Util{
   static removeCache(key){
     localStorage.removeItem(key)
   }
+  static null
   static looptimes(num,callback){
 
       for(var i=0;i<num;i++){

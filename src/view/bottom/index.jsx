@@ -1,26 +1,30 @@
 import React, { Component } from 'react'
-import {TYPE_LIST} from '../../js/common/config'
+import { TYPE_LIST } from '../../js/common/config'
 import './style.css'
-import { Sticky, Icon, Grid } from 'semantic-ui-react'
+import { Icon, Grid } from 'semantic-ui-react'
 class Bottom extends Component {
   constructor(props){
     super(props)
-    this.list = TYPE_LIST.map((item,index)=>{
-      return(
-          <Grid.Column textAlign='center' key={index} onClick={()=>{this.props.onChange(index)}} >
-              <Icon name={item.icon}/>
-              <br/>
-              {item.name}
-              </Grid.Column>
-      )
-    })
-  }
-  handleChange(value){
-    this.props.onChange(value)
+
   }
   render () {
-    return (
+      this.index = this.props.defaultIndex
+      this.list = TYPE_LIST.map((item,index)=>{
+          return(
+              <Grid.Column textAlign='center'
+                           key={index}
+                           onClick={()=>{
+                               this.props.onChange(index)
+                           }}
+              >
+                  <Icon size='big' color={this.index===item.index?'blue':'grey'} name={item.icon}/>
+                  <br/>
+                  <span color={this.index===item.index?'blue':'grey'}>{item.name}</span>
+              </Grid.Column>
+          )
+      })
 
+    return (
       <Grid centered columns={TYPE_LIST.length} >
         {this.list}
       </Grid>

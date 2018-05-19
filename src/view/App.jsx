@@ -3,19 +3,20 @@ import './style.css'
 import Bottom from './bottom/index'
 import List from './list/index'
 import Search from './search/index'
-import ListService from '../js/service/AsynListService'
+import AsynDataService from '../js/service/AsynDataService'
 import {CONFIG,TYPE_LIST} from '../js/common/config'
-import { Header} from 'semantic-ui-react'
+import { Container, Divider, Header, Segment } from 'semantic-ui-react'
 import ExampleList from './compont/pullload/index'
 
 
-const service = ListService.getInstance()
+const service = AsynDataService.getInstance()
 class App extends Component {
   constructor(){
     super()
      this.typeList = TYPE_LIST
-    this.state = {items:[],active:false,info:{}}
-    this.type = this.typeList[CONFIG.default]
+      this.defaultIndex = CONFIG.default
+    this.state = {items:[],active:false,info:{},defaultIndex:this.defaultIndex}
+    this.type = this.typeList[this.defaultIndex]
       this.url = ''
 
   }
@@ -40,10 +41,11 @@ class App extends Component {
 
   switchType(type){
       this.type = this.typeList[type]
+      this.defaultIndex = this.type.index
+      this.setState({defaultIndex:this.defaultIndex})
       this.handleSearchChange(this.searchValue)
   }
     handleListChange(url,name){
-      console.log(url)
       if(name==='pull'){
           this.handlePullData(url)
       }else{
@@ -55,13 +57,10 @@ class App extends Component {
     handlePullData(url){
         service.pullData(url,this.type.page,this.type.list_name)
             .then((page)=>{
-                if(this.type.page != page){
-                    this.type.page = page
-                    this.setState({
-                        items:this.type.page.list
-                    })
-                }
-
+                this.type.page = page
+                this.setState({
+                    items:this.type.page.list
+                })
             })
     }
     handleRefreshData(url){
@@ -80,11 +79,17 @@ class App extends Component {
     return (
         <div className='app'>
             <header>
-                <Header content='口袋豆瓣'/>
+                <div style={{height:100}}>
+                    <Segment basic >
+                    <Header content='口袋豆瓣'/>
+                <Search onChange={this.handleSearchChange.bind(this)}/>
+                    </Segment>
+                </div>
             </header>
             <main>
 
-                <Search onChange={this.handleSearchChange.bind(this)}/>
+                <div style={{height:window.innerHeight-220,overflowY:'scroll'}}>
+                    <Segment basic>
                     <List onChange={this.handleListChange.bind(this)}
                           tmpl={this.type.list_tmpl}
                           type={this.type.type_name}
@@ -92,10 +97,17 @@ class App extends Component {
                           items={this.state.items}
                           url={this.url}
                     />
-                    {/*<ExampleList/>*/}
+                    </Segment>
+                </div>
             </main>
             <footer>
-                <Bottom default={this.default} onChange={this.switchType.bind(this)}/>
+                <div style={{height:67}}>
+                        <Segment basic>
+                    <Divider/>
+                    <Bottom defaultIndex={this.state.defaultIndex} onChange={this.switchType.bind(this)}/>
+                        </Segment>
+            </div>
+
             </footer>
         </div>
     )
