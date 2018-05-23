@@ -13,7 +13,8 @@ module.exports = {
             extensions: ['.jsx', '.js'],
     },
     module: {
-        rules: [{
+        rules: [
+            {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({use:['css-loader']})
         }, {
@@ -45,9 +46,10 @@ module.exports = {
                 options: {
                     name: 'static/media/[name].[hash:8].[ext]',
                 },
-            },
+            }
+            // ,
             // {
-            //     test: /semantic\.css$/,
+            //     test: /semantic-ui-css\.css$/,
             //     loader: StringReplacePlugin.replace({
             //         replacements: [{
             //             pattern: /https\:\/\/fonts\.googleapis\.com[^\']+/ig,
@@ -57,6 +59,7 @@ module.exports = {
             //         }]
             //     })
             // }
+
         ],
     },
     devtool: 'source-map',

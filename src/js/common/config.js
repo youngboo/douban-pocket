@@ -16,6 +16,7 @@ const TYPE_LIST =[
         index:0,
         icon:'book',
         type_name:'book',
+        detail_url:CONFIG.book,
         url:CONFIG.book_search,
         name:'书',
         list_tmpl:(item,self)=>{

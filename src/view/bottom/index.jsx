@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { TYPE_LIST } from '../../js/common/config'
 import './style.css'
-import { Icon, Grid } from 'semantic-ui-react'
+import { Icon, Grid, Container, Segment } from 'semantic-ui-react'
 class Bottom extends Component {
   constructor(props){
     super(props)
@@ -19,7 +19,7 @@ class Bottom extends Component {
               >
                   <Icon size='big' color={this.index===item.index?'blue':'grey'} name={item.icon}/>
                   <br/>
-                  <span color={this.index===item.index?'blue':'grey'}>{item.name}</span>
+                  <span style={{color:this.index===item.index?'#2185d0':'black'}}>{item.name}</span>
               </Grid.Column>
           )
       })

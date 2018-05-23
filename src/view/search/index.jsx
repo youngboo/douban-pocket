@@ -5,7 +5,7 @@ class Search extends Component{
         super()
         this.holder = '搜索书籍，音乐，电影'
         this.state = {
-            content:'a'
+            content:'small'
         }
     }
     componentDidMount(){
@@ -20,7 +20,7 @@ class Search extends Component{
     render(){
         return(
                 <Input fluid action focus={true} placeholder={this.holder}>
-                    <input defaultValue='a' ref={input=>this.input=input}/>
+                    <input defaultValue='small' ref={input=>this.input=input}/>
                     <Button onClick={this.handleInputChange.bind(this)} type='submit'>搜索</Button>
                 </Input>
         )

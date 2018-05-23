@@ -5,12 +5,7 @@ import { CONFIG } from '../common/config'
 /**
  * 异步资源获取服务
  */
-class AsynDataService{
-
-    constructor(){
-        this.initResource()
-    }
-
+class AsyncDataService{
 
     /**
      * 异步获取
@@ -72,8 +67,15 @@ class AsynDataService{
     }
     getDetailById(name,id){
         let url = CONFIG[name]+id
-        return this.getDetailByUrl(url)
+        return this.getDetailByUrl(url,name)
     }
+
+    /**
+     * 刷新数据
+     * @param url
+     * @param name
+     * @returns {Promise}
+     */
     refreshData(url,name){
         return new Promise((function (resolve,reject) {
             Util.getJsonp(url)
@@ -87,10 +89,21 @@ class AsynDataService{
                 .catch((e)=>reject(e))
         }))
     }
+
+    /**
+     * 下拉获取数据
+     * @param url
+     * @param page
+     * @param name
+     * @returns {Promise}
+     */
     pullData(url,page,name){
         return new Promise(function (resolve,reject) {
             let pageCount = page.list.length
             let pageEnd = pageCount + page.start
+            if(pageEnd >= page.total){
+                resolve(page)
+            }
             let newUrl = url + '&start='+pageEnd+'&count='+pageCount
             Util.getJsonp(newUrl)
                 .then((myJson)=>{
@@ -108,7 +121,7 @@ class AsynDataService{
 
    static getInstance(){
         if(!this.service){
-            this.service = new AsynDataService()
+            this.service = new AsyncDataService()
         }
         return this.service
     }
@@ -116,4 +129,4 @@ class AsynDataService{
 
     }
 }
-export default AsynDataService
+export default AsyncDataService

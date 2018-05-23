@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './style.css'
 import { Icon, Menu, Segment } from 'semantic-ui-react'
-import AsynDataService from '../../../js/service/AsynDataService'
+import AsynDataService from '../../../js/service/AsyncDataService'
 import { Link } from 'react-router-dom'
 import { TYPE_LIST } from '../../../js/common/config'
 class ItemDetail extends Component {
@@ -33,10 +33,7 @@ class ItemDetail extends Component {
 
         }
         return (
-            <Segment basic textAlign='center' padded>
-                {/*<nav>*/}
-                    {/*<Link to='/'>返回</Link>*/}
-                {/*</nav>*/}
+            <Segment basic textAlign='center'>
                 <Segment basic fluid color='blue' textAlign='left'>
                 <Menu compact icon='labeled'>
                     <Menu.Item>

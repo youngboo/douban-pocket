@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './style.css'
-import AsynListService from '../../../js/service/AsynDataService'
+import AsynListService from '../../../js/service/AsyncDataService'
 const service = AsynListService.getInstance()
 const text = ['正在加载','开始','结束']
 class PushRefresh extends Component {
