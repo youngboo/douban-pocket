@@ -28,3 +28,10 @@ h1 {
 .hide .show_detail{
     display:block
 }
+.bottom_div{
+    height: 75px;
+    background: rgb(232,232,232);
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+}

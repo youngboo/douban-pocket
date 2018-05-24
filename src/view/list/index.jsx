@@ -1,45 +1,85 @@
 import React, { Component } from 'react'
 import './style.css'
-import { Item, Button, Grid, Transition, Ref } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { Item, Segment } from 'semantic-ui-react'
+import AsyncDataService from '../../js/service/AsyncDataService'
+const service = AsyncDataService.getInstance()
 class List extends Component {
     constructor(props) {
         super(props)
-        this.items = []
-        this.service = props.service
-        this.state = {
+        this.url = ''
+        this.init = false
+        this.state={
             pullHeight:0,
             pullText:'',
             pushHeight:0,
-            pushText:''
-
+            pushText:'',
+            items:[]
         }
+        this.initPullAndPush()
+
+
+    }
+    initDataByUrl(url){
+        service.findByType(url,this.props.type.list_name)
+        .then((page)=>{
+          this.props.type.page = page
+            console.log(page)
+          this.setState({
+            items:this.props.type.page.list
+          })
+        })
+    }
+    initPullAndPush(){
+
         this.lastY = 0
         this.lastX = 0
         this.direction = 0
         this.pullDown = false
         this.pullUp = false
-
+        this.canActivePull = false
+        this.canActivePush = false
+    }
+    clearState(){
+        this.setState({
+            pullHeight:0,
+            pullText:'',
+            pushHeight:0,
+            pushText:''
+        })
+    }
+    initPullState(){
+        this.setState({
+            pullHeight:0,
+            pullText:'',
+        })
+    }
+    initPushState(){
+        this.setState({
+            pushHeight:0,
+            pushText:''
+        })
     }
     handleItemClick(id){
-        let state={id:id,type:this.props.type,index:this.props.index}
         this.props.onChange(id)
     }
-    handleTouchStart(ev){
+    handleTouchStart(){
+        this.clearState()
         let scrollTop = this.listDiv.scrollTop
-        //console.log(scrollTop+this.listDiv.clientHeight)
-       // console.log(this.listDiv.scrollHeight)
         let scrollBottom =  (scrollTop + this.listDiv.clientHeight) >= this.listDiv.scrollHeight  ? true:false
 
-       if(scrollTop <= 0){
+        if(scrollTop <= 0){
             this.pullDown = true
-       }
-       if(scrollBottom){
-            console.log('拉到底了')
+        }else{
+            this.pullDown = false
+        }
+        if(scrollBottom){
             this.pullUp = true
-       }
+        }else{
+            this.pullUp = false
+        }
     }
     handleTouchMove(ev){
+
         let touch =ev.touches[0]
         let x = touch.clientX
         let y = touch.clientY
@@ -48,6 +88,7 @@ class List extends Component {
             if(y - this.lastY > 0 && Math.abs(x - this.lastX )< 50 ){
                 if(this.state.pullHeight>=50){
                     this.direction = 1
+                    this.canActivePull = true
                 }
                 let pullHeight = this.state.pullHeight += 2
                 if(pullHeight>50){
@@ -64,6 +105,7 @@ class List extends Component {
             if(y - this.lastY < 0 && Math.abs(x - this.lastX) < 50){
                 if(this.state.pushHeight>=50){
                     this.direction = 0
+                    this.canActivePush = true
                 }
                 let pushHeight = this.state.pushHeight += 2
                 if(pushHeight>50){
@@ -79,56 +121,90 @@ class List extends Component {
         this.lastY = y
         this.lastX = x
     }
-    handleTouchEnd(ev){
-        // let pullHeight =this.div.style.height
-        // let height = pullHeight.replace(pullHeight.match(/[a-z]+$/),'')
-        // if(height && height > 0){
-        //     this.timerID = this.pullDown2(height)
-        // }
+    handleTouchEnd(){
+        if(!this.canActivePull){
+            this.initPullState()
+        }
+        if(!this.canActivePush){
+            this.initPushState()
+        }
 
-        console.log(this.pullDown,this.direction)
-        if(this.pullDown && this.direction === 1){
+        if(this.canActivePull && this.pullDown && this.direction === 1){
             this.setState({
             pullText:'加载中'
         })
-            this.props.onChange(this.props.url)
+
             this.direction = 0
             this.pullDown = false
 
-            setTimeout(()=>{
-                this.setState({
-                    pullHeight:0,
-                    pullText:''
-                })
-            },1000)
-
+            console.log('触发下拉刷新事件')
+            this.handleRefreshData()
 
         }
-        if(this.pullUp && this.direction === 0){
+        if(this.canActivePush && this.pullUp && this.direction === 0){
             this.setState({
                 pushText:'加载中'
             })
-            console.log('加载数据')
-            this.props.onChange(this.props.url,'pull')
-
+            this.direction = 1
             this.pullUp = false
 
-            setTimeout(()=>{
-                this.setState({
-                    pushHeight:0,
-                    pushText:''
-                })
-            },1000)
-
+            console.log('触发上拉加载事件')
+            this.handlePullData()
 
         }
 
     }
+    handlePullData(){
+        if(this.props.type.page.count >= this.props.type.page.total){
+            this.setState({
+                pushText:'没有更多了',
+                pushHeight:20
+            })
+        }
+        service.pullData(this.url,this.props.type.page,this.props.type.list_name)
+            .then((page)=>{
+                this.props.type.page = page
+                this.setState({
+                    items:this.props.type.page.list,
+                    pushHeight:0,
+                    pushText:''
+                })
+            })
+            .catch((e)=>{
+                this.setState({
+                    pushText:'加载失败'
+                })
+            })
+    }
+
+    handleRefreshData(){
+        service.refreshData(this.url,this.props.type.list_name)
+            .then((page)=>{
+                if(this.props.type.page != page){
+                    this.props.type.page = page
+                    this.setState({
+                        items:this.props.type.page.list,
+                        pullHeight:0,
+                        pullText:''
+                    })
+                }
+            })
+    }
+
     render() {
         let itemRender
-        if (this.props.items&&this.props.items.length>0) {
-            itemRender =  this.props.items.map((item)=>{
-                return this.props.tmpl.call(null,item,this)
+        let url = this.props.url
+        console.log(url)
+        if(url && url != '' && url!=this.url ){
+            this.initDataByUrl(url)
+            this.url = url
+        }
+
+        let items = this.state.items
+
+        if (items && items.length > 0) {
+            itemRender =  items.map((item)=>{
+                return this.props.type.list_tmpl.call(null,item,this)
             })
            }
         return (
@@ -137,24 +213,23 @@ class List extends Component {
                  onTouchMove={this.handleTouchMove.bind(this)}
                  onTouchEnd={this.handleTouchEnd.bind(this)}
             >
-                <div
-                 style={{width:'100%',height:this.state.pullHeight,display:this.pullDown?'block':'none'}}
+                <div className='pull_div'
                 >
                     <span>{this.state.pullText}</span>
                 </div>
 
-                    <div style={{height:window.innerHeight-250,overflowY:'scroll'}}
+                    <div style={{height:window.innerHeight-200,overflowY:'scroll',paddingTop:this.state.pullHeight,paddingBottom:this.state.pushHeight,paddingLeft:15,paddingRight:15,}}
                          ref={(div)=>this.listDiv = div}
                     >
-                        <Item.Group divided unstackable link={true}
+                        <Item.Group divided unstackable link
                         >
-                             {itemRender}
+                            {itemRender}
                         </Item.Group>
                     </div>
                 <div
-                    style={{width:'100%',height:this.state.pushHeight,display:this.pullUp?'block':'none'}}
+
                 >
-                    <span>{this.state.pushText}</span>
+                    <span> {this.state.pushText}</span>
                 </div>
             </div>
 

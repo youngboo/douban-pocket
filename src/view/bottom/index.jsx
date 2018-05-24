@@ -25,9 +25,11 @@ class Bottom extends Component {
       })
 
     return (
-      <Grid centered columns={TYPE_LIST.length} >
+        <Segment basic clearing attached='bottom'>
+      <Grid centered verticalAlign='bottom' columns={TYPE_LIST.length} >
         {this.list}
       </Grid>
+        </Segment>
     )
   }
 }

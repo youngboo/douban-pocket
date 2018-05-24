@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './style.css'
-import { Button, Icon, Label, Menu, Segment } from 'semantic-ui-react'
+import { Icon, Label,Segment } from 'semantic-ui-react'
 import { TYPE_LIST } from '../../../js/common/config'
 class ShowDetail extends Component {
     constructor(props) {

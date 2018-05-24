@@ -1,5 +1,6 @@
 .list{
+    position: relative;
     overflow: hidden;
     text-align: center;
+    /*background: rgb(232,232,232);*/
 }
-
