@@ -5,14 +5,14 @@ import { TYPE_LIST } from '../../../js/common/config'
 class ShowDetail extends Component {
     constructor(props) {
         super(props)
-        this.index = this.props.index
 
     }
     render() {
         let view = undefined
         let info = this.props.info
+        let type = TYPE_LIST[this.props.index]
         if(info){
-            view = TYPE_LIST[this.index].detail_tmpl.call(this,info)
+            view = type.detail_tmpl.call(this,info)
         }else{
             view =
                 <Segment>
@@ -21,26 +21,24 @@ class ShowDetail extends Component {
 
         }
         return (
-            <div>
-            <div style={{height:30}}>
-                <Segment inverted textAlign='left' color='blue' >
-                    <Label  color='blue'
-                           onClick={()=>{this.props.onChange('back')}}
-                           as='a'
-                    >
-                        <Icon name='chevron left'/>
-                        回到主页
-                    </Label>
-                </Segment>
-            </div>
-            <Segment basic textAlign='center'>
+            <div className='detail_main'>
 
+                <div className="top_bar" >
+                    <span onClick={()=>{this.props.onChange('back')}}>
+                        {type.name}
+                    </span>
+                    <span>{info&&info.title}</span>
+                    <span></span>
+                </div>
+
+
+                <div>
 
 
                 {view}
+                </div>
 
-            </Segment>
-    </div>
+            </div>
         )
     }
 }

@@ -4,3 +4,70 @@
     text-align: center;
     /*background: rgb(232,232,232);*/
 }
+.tag_label{
+    margin-right: 0.5em;
+    font-size: 0.5em;
+    color:white;
+}
+.list_item{
+    width: 100%;
+    heigth:100px;
+    display:flex;
+    flex-wrap: nowrap;
+    border: solid 1px rgb(232,232,232);
+    margin: 10px 10px 10px 0px;
+    align-items: flex-start;
+}
+.list_item .item_left{
+    margin-right: 1em;
+
+}
+.list_item .item_right{
+    width: 70%;
+    margin: 1em 0.5em 1em 0.5em;
+    flex: 1;
+    display:inline-flex;
+    flex-direction:column;
+    text-align: left;
+}
+.item_right span{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 80%;
+}
+.item_left{
+    margin: 1em 0.5em 1em 0.5em;
+    max-width:100px;
+    max-height: 100px;
+
+}
+.item_right .item_tag{
+    display: inline-flex;
+}
+.item_tag .tag_label{
+    margin-right: 0.5em;
+    background: #f6c100;
+    font-size: 0.5em;
+    color:white;
+}
+
+.movie .item_right_title{
+    font-size: larger;
+    font-weight: bold;
+}
+.movie .tag_label{
+    background: red;
+}
+.movie .director_label{
+    font-size:0.3em;
+    color:#b4a9a5
+}
+
+.music .tag_label{
+    background:blue;
+}
+.music .item_right_title{
+    font-size: larger;
+    font-weight: bold;
+}

@@ -11,25 +11,22 @@ class Bottom extends Component {
       this.index = this.props.defaultIndex
       this.list = TYPE_LIST.map((item,index)=>{
           return(
-              <Grid.Column textAlign='center'
+              <div className='bottom_item'
                            key={index}
                            onClick={()=>{
                                this.props.onChange(index)
                            }}
               >
-                  <Icon size='big' color={this.index===item.index?'blue':'grey'} name={item.icon}/>
-                  <br/>
+                  {/*<i color={this.index===item.index?'blue':'grey'} name={item.icon}/>*/}
                   <span style={{color:this.index===item.index?'#2185d0':'black'}}>{item.name}</span>
-              </Grid.Column>
+              </div>
           )
       })
 
     return (
-        <Segment basic clearing attached='bottom'>
-      <Grid centered verticalAlign='bottom' columns={TYPE_LIST.length} >
-        {this.list}
-      </Grid>
-        </Segment>
+        <div className='flex_bottom'>
+            {this.list}
+        </div>
     )
   }
 }

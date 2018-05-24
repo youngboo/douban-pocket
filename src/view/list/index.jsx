@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './style.css'
-import { Item, Segment } from 'semantic-ui-react'
 import AsyncDataService from '../../js/service/AsyncDataService'
 const service = AsyncDataService.getInstance()
 class List extends Component {
@@ -23,7 +22,6 @@ class List extends Component {
         service.findByType(url,this.props.type.list_name)
         .then((page)=>{
           this.props.type.page = page
-            console.log(page)
           this.setState({
             items:this.props.type.page.list
           })
@@ -33,6 +31,8 @@ class List extends Component {
 
         this.lastY = 0
         this.lastX = 0
+        this.startX = 0
+        this.startY = 0
         this.direction = 0
         this.pullDown = false
         this.pullUp = false
@@ -62,10 +62,14 @@ class List extends Component {
     handleItemClick(id){
         this.props.onChange(id)
     }
-    handleTouchStart(){
+    handleTouchStart(ev){
+        this.initPullAndPush()
         this.clearState()
         let scrollTop = this.listDiv.scrollTop
         let scrollBottom =  (scrollTop + this.listDiv.clientHeight) >= this.listDiv.scrollHeight  ? true:false
+        let touch =ev.touches[0]
+        this.startX = touch.clientX
+        this.startY = touch.clientY
 
         if(scrollTop <= 0){
             this.pullDown = true
@@ -79,35 +83,36 @@ class List extends Component {
         }
     }
     handleTouchMove(ev){
-
         let touch =ev.touches[0]
         let x = touch.clientX
         let y = touch.clientY
 
+        let moveY = y - this.lastY
+
         if(this.pullDown){
-            if(y - this.lastY > 0 && Math.abs(x - this.lastX )< 50 ){
-                if(this.state.pullHeight>=50){
-                    this.direction = 1
-                    this.canActivePull = true
-                }
-                let pullHeight = this.state.pullHeight += 2
-                if(pullHeight>50){
-                    pullHeight = 50
-                }
-                this.setState({
-                    pullHeight:pullHeight,
-                    pullText:'下拉刷新'
-                })
+
+            if(this.state.pullHeight>=50){
+                this.direction = 1
             }
+            console.log(this.state.pullHeight)
+            let pullHeight = this.state.pullHeight += moveY
+            if(pullHeight >= 50){
+                pullHeight = 50
+            }
+
+            this.setState({
+                pullHeight:pullHeight,
+                pullText:'下拉刷新'
+            })
+
         }
 
         if(this.pullUp){
-            if(y - this.lastY < 0 && Math.abs(x - this.lastX) < 50){
+            if(moveY < 0 && Math.abs(x - this.lastX) < 50){
                 if(this.state.pushHeight>=50){
                     this.direction = 0
-                    this.canActivePush = true
                 }
-                let pushHeight = this.state.pushHeight += 2
+                let pushHeight = this.state.pushHeight += Math.abs(moveY)
                 if(pushHeight>50){
                     pushHeight = 50
                 }
@@ -121,15 +126,22 @@ class List extends Component {
         this.lastY = y
         this.lastX = x
     }
-    handleTouchEnd(){
-        if(!this.canActivePull){
-            this.initPullState()
-        }
-        if(!this.canActivePush){
-            this.initPushState()
+    handleTouchEnd(ev){
+        let touch =ev.changedTouches[0]
+        let endX = touch.clientX
+        let endY = touch.clientY
+        let moveX = this.startX - endX
+        let moveY = this.startY - endY
+
+        if(Math.abs(moveX) > 50 || Math.abs(moveY) < 50){
+            this.initPullAndPush()
+            this.clearState()
+            return
         }
 
-        if(this.canActivePull && this.pullDown && this.direction === 1){
+        //console.log('end'+this.state.pullHeight)
+
+        if(this.state.pullHeight >= 50 && this.pullDown && this.direction === 1){
             this.setState({
             pullText:'加载中'
         })
@@ -141,7 +153,7 @@ class List extends Component {
             this.handleRefreshData()
 
         }
-        if(this.canActivePush && this.pullUp && this.direction === 0){
+        if(this.state.pushHeight >= 50 && this.pullUp && this.direction === 0){
             this.setState({
                 pushText:'加载中'
             })
@@ -152,6 +164,7 @@ class List extends Component {
             this.handlePullData()
 
         }
+        this.clearState()
 
     }
     handlePullData(){
@@ -194,7 +207,6 @@ class List extends Component {
     render() {
         let itemRender
         let url = this.props.url
-        console.log(url)
         if(url && url != '' && url!=this.url ){
             this.initDataByUrl(url)
             this.url = url
@@ -218,16 +230,16 @@ class List extends Component {
                     <span>{this.state.pullText}</span>
                 </div>
 
-                    <div style={{height:window.innerHeight-200,overflowY:'scroll',paddingTop:this.state.pullHeight,paddingBottom:this.state.pushHeight,paddingLeft:15,paddingRight:15,}}
+                    <div style={{width:window.innerWidth,height:window.innerHeight-160,overflowY:'scroll',overflowX:'hidden',paddingTop:this.state.pullHeight,paddingLeft:10,paddingRight:10,}}
                          ref={(div)=>this.listDiv = div}
                     >
-                        <Item.Group divided unstackable link
+                        <div
                         >
                             {itemRender}
-                        </Item.Group>
+                        </div>
                     </div>
                 <div
-
+                    style={{paddingBottom:this.state.pushHeight}}
                 >
                     <span> {this.state.pushText}</span>
                 </div>

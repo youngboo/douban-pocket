@@ -5,9 +5,9 @@ import List from './list/index'
 import Search from './search/index'
 import AsyncDataService from '../js/service/AsyncDataService'
 import {CONFIG,TYPE_LIST} from '../js/common/config'
-import { Header, Segment } from 'semantic-ui-react'
+import {Segment } from 'semantic-ui-react'
 import ShowDetail from './compont/show-detail/index'
-import PushRefresh from './compont/push-refresh/index'
+
 
 
 const service = AsyncDataService.getInstance()
@@ -59,6 +59,7 @@ class App extends React.PureComponent {
       this.handleSearchChange(this.searchValue)
   }
     handleListChange(id){
+     // console.log(id,this.type)
         let url = this.type.detail_url + id
         service.getDetailByUrl(url)
             .then((json)=>{
@@ -107,16 +108,15 @@ class App extends React.PureComponent {
         <div className={this.state.showMain?'app show':'app hide'}>
             <div className='show_main'>
             <header>
-                <div style={{height:101}}>
+                <div style={{height:66}}>
                     <Segment basic clearing>
-                    <Header content='口袋豆瓣'/>
                 <Search onChange={this.handleSearchChange.bind(this)}/>
                     </Segment>
                 </div>
             </header>
             <main>
 
-                <div style={{height:window.innerHeight-175,overflow:'hidden'}}>
+                <div style={{height:window.innerHeight-145,overflow:'hidden'}}>
 
                     <List onChange={this.handleListChange.bind(this)}
                           url={this.state.url}
@@ -127,12 +127,9 @@ class App extends React.PureComponent {
                 </div>
             </main>
             <footer>
-                <div style={{height:75,overflow:'hidden'}}>
-
-                    <Bottom defaultIndex={this.state.defaultIndex} onChange={this.switchType.bind(this)}/>
-
+                <div className='bottom_wrap'>
+                <Bottom defaultIndex={this.state.defaultIndex} onChange={this.switchType.bind(this)}/>
                 </div>
-
             </footer>
             </div>
             <div className='show_detail'>

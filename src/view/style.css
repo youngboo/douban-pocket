@@ -26,7 +26,7 @@ h1 {
     display:none
 }
 .hide .show_detail{
-    display:block
+    display:block;
 }
 .bottom_div{
     height: 75px;
@@ -34,4 +34,7 @@ h1 {
     position: fixed;
     width: 100%;
     bottom: 0px;
+}
+.bottom-wrap{
+    width:100%;
 }

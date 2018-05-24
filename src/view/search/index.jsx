@@ -20,7 +20,7 @@ class Search extends Component{
     render(){
         return(
                 <Input fluid action focus={true} placeholder={this.holder}>
-                    <input defaultValue='small' ref={input=>this.input=input}/>
+                    <input defaultValue='babymetal' ref={input=>this.input=input}/>
                     <Button onClick={this.handleInputChange.bind(this)} type='submit'>搜索</Button>
                 </Input>
         )

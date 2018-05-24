@@ -2,17 +2,13 @@
     color:blue;
 }
 .flex-bottom{
+    width:100%;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-content: space-evenly;
-    border: 2px dashed #000;
-    height: 75px;
+    flex-wrap: nowrap;
+    justify-content:space-evenly;
 }
 .bottom_item{
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    border: 1px solid green;
-    font-size: 22px;
+    padding:1em;
+    display:inline-flex;
+    flex-direction:column;
 }
