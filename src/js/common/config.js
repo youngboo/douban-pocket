@@ -20,6 +20,7 @@ const TYPE_LIST =[
         url:CONFIG.book_search,
         name:'书',
         list_name:'books',
+        placeholder:'书名，作者，ISBN',
         list_tmpl:(item,self)=>(
                     <div className='list_item' key={item.id} onClick={self.handleItemClick.bind(self,item.id)}>
                         <img className='item_left' src={item.image} />
@@ -96,7 +97,7 @@ const TYPE_LIST =[
     },
     {index:1,
         type_name:'movie',
-        icon:'film',
+        icon:'movie',
         url:CONFIG.movie_search,
         name:'电影',
         detail_url:CONFIG.movie,
@@ -130,8 +131,9 @@ const TYPE_LIST =[
         ,
         detail_tmpl:(item)=>(
                 <div className='movie_detail'>
-                    <img src={item.images.small}></img>
-                    <div className='detail_divider'></div>
+                    <div className='main_img'>
+                        <img src={item.images.small}></img>
+                    </div>
                     <div>
                         <h3>简介</h3>
                         <div className='movie_summary'>

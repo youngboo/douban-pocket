@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-import { Container, Button, Input, Segment } from 'semantic-ui-react'
+import { TYPE_LIST } from '../../js/common/config'
+import './style.css'
 class Search extends Component{
     constructor(){
         super()
-        this.holder = '搜索书籍，音乐，电影'
+        this.placeholder = TYPE_LIST[0].placeholder
         this.state = {
             content:'small'
         }
     }
     componentDidMount(){
+        this.input.focus()
         this.handleInputChange()
     }
     handleInputChange(){
@@ -19,10 +21,15 @@ class Search extends Component{
     }
     render(){
         return(
-                <Input fluid action focus={true} placeholder={this.holder}>
-                    <input defaultValue='babymetal' ref={input=>this.input=input}/>
-                    <Button onClick={this.handleInputChange.bind(this)} type='submit'>搜索</Button>
-                </Input>
+                <div className='search'>
+                    <div className='input_div'>
+                        {/*<img className='search_icon' src='static/icon/search.png'/>*/}
+                        <input placeholder={this.placeholder} defaultValue='babymetal' ref={input=>this.input=input}/>
+                    </div>
+                    <div className='search_button' onClick={this.handleInputChange.bind(this)} type='submit'>
+                        <span>搜索</span>
+                    </div>
+                </div>
         )
     }
 }

@@ -63,6 +63,7 @@ class List extends Component {
         this.props.onChange(id)
     }
     handleTouchStart(ev){
+        ev.preventDefault()
         this.initPullAndPush()
         this.clearState()
         let scrollTop = this.listDiv.scrollTop
@@ -70,7 +71,8 @@ class List extends Component {
         let touch =ev.touches[0]
         this.startX = touch.clientX
         this.startY = touch.clientY
-
+        this.lastX = this.startX
+        this.lastY = this.startY
         if(scrollTop <= 0){
             this.pullDown = true
         }else{
@@ -81,8 +83,10 @@ class List extends Component {
         }else{
             this.pullUp = false
         }
+
     }
     handleTouchMove(ev){
+
         let touch =ev.touches[0]
         let x = touch.clientX
         let y = touch.clientY
@@ -90,43 +94,50 @@ class List extends Component {
         let moveY = y - this.lastY
 
         if(this.pullDown){
+            if(Math.abs(moveY)>10){
 
-            if(this.state.pullHeight>=50){
-                this.direction = 1
+                if(this.state.pullHeight>=50){
+                    this.direction = 1
+                }
+                let pullHeight = this.state.pullHeight + moveY
+                if(pullHeight >= 50){
+                    pullHeight = 50
+                }
+                if(pullHeight <= 0){
+                    pullHeight = 0
+                }
+
+                this.setState({
+                    pullHeight:pullHeight,
+                    pullText:'下拉刷新'
+                })
             }
-            console.log(this.state.pullHeight)
-            let pullHeight = this.state.pullHeight += moveY
-            if(pullHeight >= 50){
-                pullHeight = 50
-            }
-
-            this.setState({
-                pullHeight:pullHeight,
-                pullText:'下拉刷新'
-            })
-
         }
 
         if(this.pullUp){
-            if(moveY < 0 && Math.abs(x - this.lastX) < 50){
-                if(this.state.pushHeight>=50){
-                    this.direction = 0
-                }
-                let pushHeight = this.state.pushHeight += Math.abs(moveY)
-                if(pushHeight>50){
-                    pushHeight = 50
-                }
-                this.setState({
-                    pushHeight:pushHeight,
-                    pushText:'上拉加载'
-                })
+            if(this.state.pushHeight >= 50){
+                this.direction = 0
             }
+            let pushHeight = this.state.pushHeight - moveY
+            console.log(pushHeight)
+            if(pushHeight >= 50){
+                pushHeight = 50
+            }if(pushHeight <= 0){
+                pushHeight = 0
+            }
+
+            this.setState({
+                pushHeight:pushHeight,
+                pushText:'上拉加载'
+            })
+
         }
 
         this.lastY = y
         this.lastX = x
     }
     handleTouchEnd(ev){
+        ev.preventDefault()
         let touch =ev.changedTouches[0]
         let endX = touch.clientX
         let endY = touch.clientY
@@ -143,8 +154,9 @@ class List extends Component {
 
         if(this.state.pullHeight >= 50 && this.pullDown && this.direction === 1){
             this.setState({
-            pullText:'加载中'
-        })
+                pullText:'加载中',
+                pullHeight:50
+            })
 
             this.direction = 0
             this.pullDown = false
@@ -193,14 +205,12 @@ class List extends Component {
     handleRefreshData(){
         service.refreshData(this.url,this.props.type.list_name)
             .then((page)=>{
-                if(this.props.type.page != page){
-                    this.props.type.page = page
-                    this.setState({
-                        items:this.props.type.page.list,
-                        pullHeight:0,
-                        pullText:''
-                    })
-                }
+                this.props.type.page = page
+                this.setState({
+                    items:this.props.type.page.list,
+                    pullHeight:0,
+                    pullText:''
+                })
             })
     }
 
@@ -220,30 +230,25 @@ class List extends Component {
             })
            }
         return (
-            <div className="list"
+            <main className="content flex-1 list"
                 onTouchStart={this.handleTouchStart.bind(this)}
                  onTouchMove={this.handleTouchMove.bind(this)}
                  onTouchEnd={this.handleTouchEnd.bind(this)}
+                 ref={(div)=>this.listDiv = div}
             >
-                <div className='pull_div'
-                >
+                <div className='pull_div'>
                     <span>{this.state.pullText}</span>
                 </div>
-
-                    <div style={{width:window.innerWidth,height:window.innerHeight-160,overflowY:'scroll',overflowX:'hidden',paddingTop:this.state.pullHeight,paddingLeft:10,paddingRight:10,}}
-                         ref={(div)=>this.listDiv = div}
-                    >
-                        <div
-                        >
-                            {itemRender}
-                        </div>
-                    </div>
-                <div
-                    style={{paddingBottom:this.state.pushHeight}}
+                {/*style={{overflowY:'scroll',overflowX:'hidden',paddingTop:this.state.pullHeight}}*/}
+                <div className='list_content' style={{paddingTop:this.state.pullHeight}}
                 >
-                    <span> {this.state.pushText}</span>
+                    {itemRender}
                 </div>
-            </div>
+
+                <div className='push_div'  style={{height:this.state.pushHeight}}>
+                    <span>{this.state.pushText}</span>
+                </div>
+            </main>
 
         )
     }

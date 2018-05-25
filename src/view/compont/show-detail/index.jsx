@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './style.css'
-import { Icon, Label,Segment } from 'semantic-ui-react'
 import { TYPE_LIST } from '../../../js/common/config'
 class ShowDetail extends Component {
     constructor(props) {
@@ -15,17 +14,19 @@ class ShowDetail extends Component {
             view = type.detail_tmpl.call(this,info)
         }else{
             view =
-                <Segment>
+                <div>
                     数据加载中
-                </Segment>
+                </div>
 
         }
         return (
             <div className='detail_main'>
 
                 <div className="top_bar" >
-                    <span onClick={()=>{this.props.onChange('back')}}>
-                        {type.name}
+                    <span className='back_span' onClick={()=>{this.props.onChange('back')}}>
+                        <img id='back' src='static/icon/back.png'/>
+                           <label htmlFor='back'>{type.name}</label>
+
                     </span>
                     <span>{info&&info.title}</span>
                     <span></span>

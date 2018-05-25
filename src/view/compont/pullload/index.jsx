@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactIScroll from 'react-iscroll'
 import iScroll from 'iscroll/build/iscroll-probe'
-import { Segment } from 'semantic-ui-react'
 
 
 class ExampleList extends React.Component{
@@ -42,7 +41,7 @@ class ExampleList extends React.Component{
         return (
             <div style={{height:window.innerHeight-250}}>
                 <h1>Example of scrollable list</h1>
-                <ReactIScroll
+                <div
 
                     iScroll={iScroll}
                               options={ {
@@ -70,7 +69,7 @@ class ExampleList extends React.Component{
                             iScroll.scrollTo(0,0)
                         })
                     }}>回到起点</button>
-                </ReactIScroll>
+                </div>
 
             </div>
         )

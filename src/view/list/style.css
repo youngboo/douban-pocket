@@ -1,8 +1,27 @@
 .list{
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-    /*background: rgb(232,232,232);*/
+    width:100%;
+    flex:1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.pull_div,.push_div{
+    flex:none;
+    display:inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+.pull_div,.push_div span{
+    width:50%;
+    height:2em;
+}
+.list_content{
+    flex:1;
+    overflow: auto;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 .tag_label{
     margin-right: 0.5em;
@@ -10,12 +29,13 @@
     color:white;
 }
 .list_item{
-    width: 100%;
+    flex: 1;
+    width: 90%;
     heigth:100px;
     display:flex;
     flex-wrap: nowrap;
     border: solid 1px rgb(232,232,232);
-    margin: 10px 10px 10px 0px;
+    margin:.2em .2em .5em .2em;
     align-items: flex-start;
 }
 .list_item .item_left{
@@ -29,6 +49,11 @@
     display:inline-flex;
     flex-direction:column;
     text-align: left;
+}
+.ellipsis_span{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .item_right span{
     text-overflow: ellipsis;

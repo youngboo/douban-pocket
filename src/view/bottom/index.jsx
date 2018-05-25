@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { TYPE_LIST } from '../../js/common/config'
 import './style.css'
-import { Icon, Grid, Container, Segment } from 'semantic-ui-react'
 class Bottom extends Component {
   constructor(props){
     super(props)
-
+    this.index = this.props.index
   }
   render () {
       this.index = this.props.defaultIndex
       this.list = TYPE_LIST.map((item,index)=>{
+          let icon = this.index === item.index ? item.icon+'_blue.png':item.icon+'.png'
           return(
               <div className='bottom_item'
                            key={index}
@@ -17,7 +17,7 @@ class Bottom extends Component {
                                this.props.onChange(index)
                            }}
               >
-                  {/*<i color={this.index===item.index?'blue':'grey'} name={item.icon}/>*/}
+                  <img src={'static/icon/'+icon}/>
                   <span style={{color:this.index===item.index?'#2185d0':'black'}}>{item.name}</span>
               </div>
           )

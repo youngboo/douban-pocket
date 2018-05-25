@@ -5,11 +5,8 @@ import List from './list/index'
 import Search from './search/index'
 import AsyncDataService from '../js/service/AsyncDataService'
 import {CONFIG,TYPE_LIST} from '../js/common/config'
-import {Segment } from 'semantic-ui-react'
 import ShowDetail from './compont/show-detail/index'
-
-
-
+import Util from '../js/common/util'
 const service = AsyncDataService.getInstance()
 class App extends React.PureComponent {
   constructor(){
@@ -106,31 +103,20 @@ class App extends React.PureComponent {
   render () {
     return (
         <div className={this.state.showMain?'app show':'app hide'}>
-            <div className='show_main'>
-            <header>
-                <div style={{height:66}}>
-                    <Segment basic clearing>
-                <Search onChange={this.handleSearchChange.bind(this)}/>
-                    </Segment>
-                </div>
-            </header>
-            <main>
-
-                <div style={{height:window.innerHeight-145,overflow:'hidden'}}>
+            <div className='show_main wrap flex flex-v'>
+                <header className='header'>
+                     <Search onChange={this.handleSearchChange.bind(this)}/>
+                </header>
 
                     <List onChange={this.handleListChange.bind(this)}
                           url={this.state.url}
                           type={this.type}
                     />
-                    {/*<PushRefresh/>*/}
 
-                </div>
-            </main>
-            <footer>
-                <div className='bottom_wrap'>
+                <footer className='footer'>
                 <Bottom defaultIndex={this.state.defaultIndex} onChange={this.switchType.bind(this)}/>
-                </div>
-            </footer>
+                </footer>
+
             </div>
             <div className='show_detail'>
                 <ShowDetail

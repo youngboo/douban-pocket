@@ -25,12 +25,7 @@ class Util{
   static removeCache(key){
     localStorage.removeItem(key)
   }
-  static null
   static looptimes(num,callback){
-
-      for(var i=0;i<num;i++){
-         callback(i)
-      }
 
   }
 }

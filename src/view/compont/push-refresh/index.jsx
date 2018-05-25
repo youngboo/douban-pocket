@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './style.css'
 import AsynListService from '../../../js/service/AsyncDataService'
-import { Image, Label } from 'semantic-ui-react'
 const service = AsynListService.getInstance()
 const text = ['正在加载','开始','结束']
 class PushRefresh extends Component {
@@ -120,7 +119,7 @@ class PushRefresh extends Component {
                  onTouchMove={this.handleTouchMove.bind(this)}
                  onTouchEnd={this.handleTouchEnd.bind(this)}
             >
-                <Label attached='top'>{this.state.pullText}</Label>
+                <label attached='top'>{this.state.pullText}</label>
 
                 <div style={{zIndex:2,width:'100%',height:window.innerHeight-250,overflowY:'scroll',paddingTop:this.state.pullHeight,paddingBottom:this.state.pushHeight}}
                      ref={(div)=>this.listDiv = div}
@@ -211,7 +210,7 @@ class PushRefresh extends Component {
 
 
                 </div>
-                <Label attached='bottom'>{this.state.pushText}</Label>
+                <label attached='bottom'>{this.state.pushText}</l>
             </div>
         )
     }
