@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './style.css'
 import AsyncDataService from '../../js/service/AsyncDataService'
+import { CONFIG } from '../../js/common/config'
 const service = AsyncDataService.getInstance()
-class List extends Component {
+class List extends React.PureComponent {
     constructor(props) {
         super(props)
         this.url = ''
-        this.init = false
+        this.pushText = ['加载更多','没有更多了']
         this.state={
             pullHeight:0,
             pullText:'',
@@ -28,11 +29,13 @@ class List extends Component {
               this.setState({
                   find:false
               })
+                return
             }
             this.canPullLoad = ((page.start + page.count) < page.total)?true:false
           this.setState({
               items:this.props.type.page.list,
-              pushText:this.canPullLoad?'上拉加载':'没有更多了'
+              pushText:this.canPullLoad?this.pushText[0]:this.pushText[1],
+              find:true
           })
         })
     }
@@ -49,8 +52,7 @@ class List extends Component {
         this.setState({
             pullHeight:0,
             pullText:'',
-            pushHeight:0,
-            pushText:''
+            pushText:this.pushText[1]
         })
     }
 
@@ -64,6 +66,7 @@ class List extends Component {
        if(!this.canTouchMove()){
            return false
        }
+        this.initPullAndPush()
         let scrollTop = this.listDiv.scrollTop
         let scrollBottom =  (scrollTop + this.listDiv.clientHeight) >= this.listDiv.scrollHeight  ? true:false
         let touch =ev.touches[0]
@@ -71,17 +74,15 @@ class List extends Component {
         this.startY = touch.clientY
         this.lastX = this.startX
         this.lastY = this.startY
-        //console.log(this.listDiv.offsetTop+200,this.startY)
         if(scrollTop <= 0 && this.startY < this.listDiv.offsetTop+200){
-            this.initPullAndPush()
+
             this.pullDown = true
         }else{
             this.pullDown = false
         }
         let bottom = this.listDiv.clientHeight + this.listDiv.offsetTop - 200
         //console.log(bottom,this.startY)
-        if(scrollBottom && this.canPullLoad && this.startY > bottom){
-            this.initPullAndPush()
+        if(scrollBottom && this.canPullLoad && this.startY > bottom &&!CONFIG.auto_load){
             this.pullUp = true
         }else{
             this.pullUp = false
@@ -100,10 +101,10 @@ class List extends Component {
 
         if(this.pullDown){
             if(Math.abs(moveY)>3){
-
                 if(this.state.pullHeight>=50){
                     this.direction = 1
                 }
+
                 let pullHeight = this.state.pullHeight + moveY
                 if(pullHeight >= 50){
                     pullHeight = 50
@@ -111,7 +112,7 @@ class List extends Component {
                 if(pullHeight <= 0){
                     pullHeight = 0
                 }
-
+                console.log(moveY,pullHeight)
                 this.setState({
                     pullHeight:pullHeight,
                     pullText:'下拉刷新'
@@ -132,13 +133,24 @@ class List extends Component {
 
             this.setState({
                 pushHeight:pushHeight,
-                pushText:'上拉加载'
+                pushText:this.pushText[0]
             })
 
         }
 
         this.lastY = y
         this.lastX = x
+    }
+    initPullState(){
+        this.setState({
+            pullText:'',
+            pullHeight:0
+        })
+    }
+    initPushState(){
+        this.setState({
+            pushText:this.pushText[1]
+        })
     }
     handleTouchEnd(ev){
         if(!this.canTouchMove()){
@@ -161,18 +173,22 @@ class List extends Component {
                 pullHeight:50
             })
             this.handleRefreshData()
+        }else{
+            this.initPullState()
         }
         if(this.state.pushHeight >= 50 && this.pullUp && this.direction === 0 && this.canPullLoad){
             this.setState({
                 pushText:'加载中'
             })
             this.handlePullData()
+        }else{
+            this.initPushState()
         }
     }
     handlePullData(){
         if(this.props.type.page.count >= this.props.type.page.total){
             this.setState({
-                pushText:'没有更多了'
+                pushText:this.pushText[1]
             })
             return
         }
@@ -183,7 +199,8 @@ class List extends Component {
                 this.setState({
                     items:this.props.type.page.list,
                     pushHeight:0,
-                    pushText:this.canPullLoad?'上拉加载':'没有更多了'
+                    pushText:this.canPullLoad?this.pushText[0]:this.pushText[1],
+                    find:true
                 })
             })
             .catch((e)=>{
@@ -199,12 +216,33 @@ class List extends Component {
                 this.props.type.page = page
                 this.setState({
                     items:this.props.type.page.list,
-                    pullHeight:0,
-                    pullText:''
+                    pullHeight:50,
+                    pullText:'已刷新'
                 })
+                setTimeout(()=>{
+                    this.setState({
+                        items:this.props.type.page.list,
+                        pullHeight:0,
+                        pullText:''
+                    })
+                },1000)
             })
     }
+    handleScroll(){
+        let scrollBottom =  (this.listDiv.scrollTop + this.listDiv.clientHeight) >= this.listDiv.scrollHeight  ? true:false
+        if(this.canPullLoad && this.canTouchMove()&& scrollBottom && CONFIG.auto_load){
+            this.autoLoadData()
+        }
 
+    }
+    autoLoadData(){
+        this.handlePullData()
+    }
+    componentDidMount(){
+        if(CONFIG.auto_load){
+
+        }
+    }
     render() {
         let itemRender
         let url = this.props.url
@@ -221,12 +259,20 @@ class List extends Component {
             })
            }
            let render
-        if(this.state.find){
+        if(!url){
+            render =<main className="content flex-1 list no-search">
+                <div className='not-find'>
+                    <h3>在搜索框输入内容进行查找</h3>
+                </div>
+            </main>
+        }
+        else if(this.state.find){
             render =
                 <main className="content flex-1 list"
                      onTouchStart={this.handleTouchStart.bind(this)}
                      onTouchMove={this.handleTouchMove.bind(this)}
                      onTouchEnd={this.handleTouchEnd.bind(this)}
+                      onScroll={this.handleScroll.bind(this)}
                      ref={(div)=>this.listDiv = div}
                 >
                     {!this.state.find&&
@@ -244,11 +290,13 @@ class List extends Component {
                         <span>{this.state.pushText}</span>
                     </div>
                 </main>
-        }else{
+        }else if(!this.state.find){
             render = <main className="content flex-1 list no-search">
-                <h3>搜索</h3>
-                <span>没有找到相关内容，换个搜索词试试吧。</span>
-            </main>
+                        <div className='not-find'>
+                            <h3>搜索</h3>
+                            <span>没有找到相关内容，换个搜索词试试吧。</span>
+                        </div>
+                    </main>
         }
         return render
     }

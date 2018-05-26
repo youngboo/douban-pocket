@@ -26,7 +26,6 @@ class ShowDetail extends Component {
                     <span className='back_span' onClick={()=>{this.props.onChange('back')}}>
                         <img id='back' src='static/icon/back.png'/>
                            <label htmlFor='back'>{type.name}</label>
-
                     </span>
                     <span className='title_span'>{info&&info.title}</span>
                     <span className='holder_span'></span>

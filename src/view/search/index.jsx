@@ -10,7 +10,7 @@ class Search extends Component{
     }
     componentDidMount(){
         this.input.focus()
-        //this.handleInputChange()
+
     }
     handleInputChange(){
         this.setState({
@@ -18,11 +18,21 @@ class Search extends Component{
         })
         this.props.onChange(this.input.value)
     }
+    handleKeyUp(ev){
+        let key = ev.keyCode
+        if(key === 13){
+            this.handleInputChange()
+        }
+    }
     render(){
         let placeholder = TYPE_LIST[this.props.index].placeholder
         return(
                 <div className='search'>
-                    <input placeholder={placeholder} defaultValue='' ref={input=>this.input=input}/>
+                    <div className='input_search'>
+                        <img src='static/icon/search.png'/>
+                        <input placeholder={placeholder} onKeyUp={this.handleKeyUp.bind(this)} defaultValue='' ref={input=>this.input=input}/>
+                    </div>
+
                     <div className='search_button' onClick={this.handleInputChange.bind(this)} type='submit'>
                         <span>搜索</span>
                     </div>

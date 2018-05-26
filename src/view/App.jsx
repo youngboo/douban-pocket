@@ -23,9 +23,8 @@ class App extends React.PureComponent {
         url:'',
 
     }
-
     this.type = this.typeList[this.defaultIndex]
-      this.url = ''
+    this.url = ''
 
   }
 
@@ -45,7 +44,10 @@ class App extends React.PureComponent {
   switchType(type){
       this.type = this.typeList[type]
       this.defaultIndex = this.type.index
-      this.setState({defaultIndex:this.defaultIndex})
+      this.setState({
+          defaultIndex:this.defaultIndex,
+          url:this.url
+      })
       this.handleSearchChange(this.searchValue)
   }
     handleListChange(id){

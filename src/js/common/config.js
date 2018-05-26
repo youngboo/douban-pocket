@@ -145,8 +145,10 @@ const TYPE_LIST =[
                                 </div>
                                 <span>上映时间：{item.year}</span>
 
-                                {item.directors && item.directors[0]&&
-                                (<span>导演：{item.directors[0].name}</span>)
+                                {item.directors && item.directors.length > 0&&
+                                <span>
+                                    导演：{item.directors.map((item,index)=>(<label key={index}>{item.name}&nbsp;</label>))}
+                                </span>
                                 }
                                 {item.original_title&&
                                 <span>

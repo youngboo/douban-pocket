@@ -22,19 +22,19 @@
     display: inline-flex;
     flex-wrap: nowrap;
     max-height: 100%;
-    flex:0 0 20%;
+    flex:0 0 30%;
     align-items: center;
 }
 .back_span img{
-    max-width:50%;
+    max-width:50px;
     max-height:60px;
 }
 .top_bar .title_span{
-    flex:1 0 60%;
+    flex:1 0 40%;
     text-align: center;
 }
 .top_bar .holder_span{
-    flex:0 1 20%;
+    flex:0 1 30%;
 }
 .detail_hidden{
    display:none;

@@ -10,17 +10,16 @@
     /*height: 80%;*/
 /*}*/
 .search input{
-    width:70%;
-    height:80%;
+    flex: 1 0 auto;
+    height:100%;
     box-sizing: border-box;
     font-size:1.2em;
-    border:1px solid #c8cccf;
     color:#6a6f77;
+    border:0;
     -web-kit-appearance:none;
     -moz-appearance: none;
     display:block;
     outline:0;
-    padding:0 1em;
     text-decoration:none;
 }
 .search .search_button{
@@ -33,4 +32,15 @@
     display:inline-flex;
     justify-content:center;
     align-items: center;
+    border: 1px solid #c8cccf;
+}
+.input_search{
+    width:70%;
+    height:80%;
+    display:flex;
+    border:1px solid #c8cccf;
+}
+.input_search img{
+    max-width:64px;
+    flex: auto;
 }

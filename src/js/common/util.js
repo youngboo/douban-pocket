@@ -1,5 +1,6 @@
 import fetchJsonp from 'fetch-jsonp'
 class Util{
+
   static getJsonp(url){
     return new Promise(function(resolve,reject){
       fetchJsonp(url)
@@ -9,6 +10,7 @@ class Util{
       .catch(e=>reject(e))
     })
   }
+
   static fetchGet(url){
     return new Promise(function(resolve,reject){
       fetch(url)
@@ -16,17 +18,17 @@ class Util{
           .catch((e)=>reject(e))
     })
   }
+
   static cache(key,value){
     localStorage.setItem(key,value)
   }
+
   static getCacheByKey(key){
     return localStorage.getItem(key)
   }
+
   static removeCache(key){
     localStorage.removeItem(key)
-  }
-  static looptimes(num,callback){
-
   }
 }
 export default Util
