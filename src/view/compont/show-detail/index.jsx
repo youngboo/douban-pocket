@@ -28,17 +28,10 @@ class ShowDetail extends Component {
                            <label htmlFor='back'>{type.name}</label>
 
                     </span>
-                    <span>{info&&info.title}</span>
-                    <span></span>
+                    <span className='title_span'>{info&&info.title}</span>
+                    <span className='holder_span'></span>
                 </div>
-
-
-                <div>
-
-
                 {view}
-                </div>
-
             </div>
         )
     }

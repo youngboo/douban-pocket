@@ -12,7 +12,8 @@ class List extends Component {
             pullText:'',
             pushHeight:0,
             pushText:'',
-            items:[]
+            items:[],
+            find:true
         }
         this.initPullAndPush()
 
@@ -22,13 +23,20 @@ class List extends Component {
         service.findByType(url,this.props.type.list_name)
         .then((page)=>{
           this.props.type.page = page
+            if(page.count === 0){
+              console.log(page)
+              this.setState({
+                  find:false
+              })
+            }
+            this.canPullLoad = ((page.start + page.count) < page.total)?true:false
           this.setState({
-            items:this.props.type.page.list
+              items:this.props.type.page.list,
+              pushText:this.canPullLoad?'上拉加载':'没有更多了'
           })
         })
     }
     initPullAndPush(){
-
         this.lastY = 0
         this.lastX = 0
         this.startX = 0
@@ -36,8 +44,6 @@ class List extends Component {
         this.direction = 0
         this.pullDown = false
         this.pullUp = false
-        this.canActivePull = false
-        this.canActivePush = false
     }
     clearState(){
         this.setState({
@@ -47,25 +53,17 @@ class List extends Component {
             pushText:''
         })
     }
-    initPullState(){
-        this.setState({
-            pullHeight:0,
-            pullText:'',
-        })
-    }
-    initPushState(){
-        this.setState({
-            pushHeight:0,
-            pushText:''
-        })
-    }
+
     handleItemClick(id){
         this.props.onChange(id)
     }
+    canTouchMove(){
+        return this.listDiv.scrollHeight > this.listDiv.clientHeight
+    }
     handleTouchStart(ev){
-        ev.preventDefault()
-        this.initPullAndPush()
-        this.clearState()
+       if(!this.canTouchMove()){
+           return false
+       }
         let scrollTop = this.listDiv.scrollTop
         let scrollBottom =  (scrollTop + this.listDiv.clientHeight) >= this.listDiv.scrollHeight  ? true:false
         let touch =ev.touches[0]
@@ -73,12 +71,17 @@ class List extends Component {
         this.startY = touch.clientY
         this.lastX = this.startX
         this.lastY = this.startY
-        if(scrollTop <= 0){
+        //console.log(this.listDiv.offsetTop+200,this.startY)
+        if(scrollTop <= 0 && this.startY < this.listDiv.offsetTop+200){
+            this.initPullAndPush()
             this.pullDown = true
         }else{
             this.pullDown = false
         }
-        if(scrollBottom){
+        let bottom = this.listDiv.clientHeight + this.listDiv.offsetTop - 200
+        //console.log(bottom,this.startY)
+        if(scrollBottom && this.canPullLoad && this.startY > bottom){
+            this.initPullAndPush()
             this.pullUp = true
         }else{
             this.pullUp = false
@@ -86,7 +89,9 @@ class List extends Component {
 
     }
     handleTouchMove(ev){
-
+        if(!this.canTouchMove()){
+            return false
+        }
         let touch =ev.touches[0]
         let x = touch.clientX
         let y = touch.clientY
@@ -94,7 +99,7 @@ class List extends Component {
         let moveY = y - this.lastY
 
         if(this.pullDown){
-            if(Math.abs(moveY)>10){
+            if(Math.abs(moveY)>3){
 
                 if(this.state.pullHeight>=50){
                     this.direction = 1
@@ -114,12 +119,11 @@ class List extends Component {
             }
         }
 
-        if(this.pullUp){
+        if(this.pullUp && this.canPullLoad){
             if(this.state.pushHeight >= 50){
                 this.direction = 0
             }
             let pushHeight = this.state.pushHeight - moveY
-            console.log(pushHeight)
             if(pushHeight >= 50){
                 pushHeight = 50
             }if(pushHeight <= 0){
@@ -137,7 +141,9 @@ class List extends Component {
         this.lastX = x
     }
     handleTouchEnd(ev){
-        ev.preventDefault()
+        if(!this.canTouchMove()){
+            return false
+        }
         let touch =ev.changedTouches[0]
         let endX = touch.clientX
         let endY = touch.clientY
@@ -149,50 +155,35 @@ class List extends Component {
             this.clearState()
             return
         }
-
-        //console.log('end'+this.state.pullHeight)
-
         if(this.state.pullHeight >= 50 && this.pullDown && this.direction === 1){
             this.setState({
                 pullText:'加载中',
                 pullHeight:50
             })
-
-            this.direction = 0
-            this.pullDown = false
-
-            console.log('触发下拉刷新事件')
             this.handleRefreshData()
-
         }
-        if(this.state.pushHeight >= 50 && this.pullUp && this.direction === 0){
+        if(this.state.pushHeight >= 50 && this.pullUp && this.direction === 0 && this.canPullLoad){
             this.setState({
                 pushText:'加载中'
             })
-            this.direction = 1
-            this.pullUp = false
-
-            console.log('触发上拉加载事件')
             this.handlePullData()
-
         }
-        this.clearState()
-
     }
     handlePullData(){
         if(this.props.type.page.count >= this.props.type.page.total){
             this.setState({
-                pushText:'没有更多了',
-                pushHeight:20
+                pushText:'没有更多了'
             })
+            return
         }
-        service.pullData(this.url,this.props.type.page,this.props.type.list_name)
+        service.pullData(this.props.url,this.props.type.page,this.props.type.list_name)
             .then((page)=>{
                 this.props.type.page = page
+                this.canPullLoad = ((page.start + page.count) < page.total)?true:false
                 this.setState({
                     items:this.props.type.page.list,
                     pushHeight:0,
-                    pushText:''
+                    pushText:this.canPullLoad?'上拉加载':'没有更多了'
                 })
             })
             .catch((e)=>{
@@ -203,7 +194,7 @@ class List extends Component {
     }
 
     handleRefreshData(){
-        service.refreshData(this.url,this.props.type.list_name)
+        service.refreshData(this.props.url,this.props.type.list_name)
             .then((page)=>{
                 this.props.type.page = page
                 this.setState({
@@ -229,28 +220,37 @@ class List extends Component {
                 return this.props.type.list_tmpl.call(null,item,this)
             })
            }
-        return (
-            <main className="content flex-1 list"
-                onTouchStart={this.handleTouchStart.bind(this)}
-                 onTouchMove={this.handleTouchMove.bind(this)}
-                 onTouchEnd={this.handleTouchEnd.bind(this)}
-                 ref={(div)=>this.listDiv = div}
-            >
-                <div className='pull_div'>
-                    <span>{this.state.pullText}</span>
-                </div>
-                {/*style={{overflowY:'scroll',overflowX:'hidden',paddingTop:this.state.pullHeight}}*/}
-                <div className='list_content' style={{paddingTop:this.state.pullHeight}}
+           let render
+        if(this.state.find){
+            render =
+                <main className="content flex-1 list"
+                     onTouchStart={this.handleTouchStart.bind(this)}
+                     onTouchMove={this.handleTouchMove.bind(this)}
+                     onTouchEnd={this.handleTouchEnd.bind(this)}
+                     ref={(div)=>this.listDiv = div}
                 >
-                    {itemRender}
-                </div>
-
-                <div className='push_div'  style={{height:this.state.pushHeight}}>
-                    <span>{this.state.pushText}</span>
-                </div>
+                    {!this.state.find&&
+                    <div>
+                        没有找到相关内容
+                    </div>
+                    }
+                    <div className={this.state.pullText==''?'pull_div hide':'pull_div'}>
+                        <span>{this.state.pullText}</span>
+                    </div>
+                    <div className='list_content' style={{paddingTop:this.state.pullHeight}}>
+                        {itemRender}
+                    </div>
+                    <div className='push_div'>
+                        <span>{this.state.pushText}</span>
+                    </div>
+                </main>
+        }else{
+            render = <main className="content flex-1 list no-search">
+                <h3>搜索</h3>
+                <span>没有找到相关内容，换个搜索词试试吧。</span>
             </main>
-
-        )
+        }
+        return render
     }
 }
 export default List

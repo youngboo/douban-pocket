@@ -20,7 +20,7 @@ class App extends React.PureComponent {
         defaultIndex:this.defaultIndex,
         index:0,
         showMain:true,
-        url:''
+        url:'',
 
     }
 
@@ -32,16 +32,9 @@ class App extends React.PureComponent {
   handleSearchChange(searchValue){
     this.searchValue = searchValue
     this.url = this.getSearchUrl(searchValue)
-    // service.findByType(this.url,this.type.list_name)
-    // .then((page)=>{
-    //   this.type.page = page
-    //   this.setState({
-    //     items:this.type.page.list
-    //   })
-    // })
-        //console.log(this.url)
       this.setState({
-          url:this.url
+          url:this.url,
+          index:this.type.index
       })
 
   }
@@ -56,7 +49,6 @@ class App extends React.PureComponent {
       this.handleSearchChange(this.searchValue)
   }
     handleListChange(id){
-     // console.log(id,this.type)
         let url = this.type.detail_url + id
         service.getDetailByUrl(url)
             .then((json)=>{
@@ -67,45 +59,14 @@ class App extends React.PureComponent {
                 })
             })
     }
-    // handleListChange(url,name){
-    //   if(name==='pull'){
-    //       this.handlePullData(url)
-    //   }else{
-    //       this.handleRefreshData(url)
-    //   }
-    // }
-    //
-    // handlePullData(url){
-    //     if(this.type.page.count >= this.type.page.total){
-    //         return
-    //     }
-    //     service.pullData(url,this.type.page,this.type.list_name)
-    //         .then((page)=>{
-    //             this.type.page = page
-    //             this.setState({
-    //                 items:this.type.page.list
-    //             })
-    //         })
-    // }
-    //
-    // handleRefreshData(url){
-    //     service.refreshData(url,this.type.list_name)
-    //         .then((page)=>{
-    //             if(this.type.page != page){
-    //                 this.type.page = page
-    //                 this.setState({
-    //                     items:this.type.page.list
-    //                 })
-    //             }
-    //         })
-    // }
+
 
   render () {
     return (
         <div className={this.state.showMain?'app show':'app hide'}>
             <div className='show_main wrap flex flex-v'>
                 <header className='header'>
-                     <Search onChange={this.handleSearchChange.bind(this)}/>
+                     <Search index={this.state.index} onChange={this.handleSearchChange.bind(this)}/>
                 </header>
 
                     <List onChange={this.handleListChange.bind(this)}

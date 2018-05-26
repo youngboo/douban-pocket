@@ -5,7 +5,7 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     background: rgb(232,232,232);
     max-height: 100px;
 }
@@ -21,3 +21,13 @@
 .bottom_item img{
     margin-bottom: 0.5em;
 }
+.flex-3{
+    flex:0 1 33.3333%;
+}
+.flex-4{
+    flex:0 1 25%;
+}
+.flex-5{
+    flex:0 1 20%;
+}
+

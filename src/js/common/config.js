@@ -3,7 +3,8 @@ import { Card, Grid, Image, Item, Segment } from 'semantic-ui-react'
 import Util from './util'
 import { Link } from 'react-router-dom'
 const CONFIG = {
-    default:2,
+    auto_load:true,
+    default:0,
     book:'https://api.douban.com/v2/book/',
     movie:'https://api.douban.com/v2/movie/subject/',
     music:'https://api.douban.com/v2/music/',
@@ -102,12 +103,12 @@ const TYPE_LIST =[
         name:'电影',
         detail_url:CONFIG.movie,
         list_name:'subjects',
+        placeholder:'电影，影人，影院，电视剧',
         list_tmpl:(item,self)=>(
                 <div className='list_item movie' key={item.id} onClick={self.handleItemClick.bind(self,item.id)}>
-                    {item.image}
-                    <img className='item_left' src={item.images.small} />
+                    <img className='item_left' src={item.images?item.images.small:'static/img/movie_default.png'} />
                     <div className='item_right '>
-                        <span className='item_right_title'>{item.title}——{item.year}</span>
+                        <span className='item_right_title'>{item.title}—{item.year}</span>
                         {item.genres&&
                         <span className='item_tag'>
                             {item.genres.map((tag,index)=>(<label key={index} className='tag_label'>{tag}</label>))}
@@ -132,7 +133,7 @@ const TYPE_LIST =[
         detail_tmpl:(item)=>(
                 <div className='movie_detail'>
                     <div className='main_img'>
-                        <img src={item.images.small}></img>
+                        <img src={item.images?item.images.small:'static/img/movie-default.png'}></img>
                     </div>
                     <div>
                         <h3>简介</h3>
@@ -160,7 +161,7 @@ const TYPE_LIST =[
                             {item.casts &&
                             item.casts.map((cat,index)=>(
                                 cat.avatars&&(
-                                <div className='director_img'>
+                                <div key={index} className='director_img'>
                                     <img src={cat.avatars.small}/>
                                     <span>{cat.name}</span>
                                 </div>
@@ -182,6 +183,7 @@ const TYPE_LIST =[
         detail_url:CONFIG.music,
         name:'音乐',
         list_name:'musics',
+        placeholder:'唱片名，表演者，条码，ISRC',
         list_tmpl:(item,self)=>(
             <div className='list_item' key={item.id} onClick={self.handleItemClick.bind(self,item.id)}>
                 <img className='item_left' src={item.image} />
@@ -220,7 +222,7 @@ const TYPE_LIST =[
                                 {item.tags.map((tag,index)=>(<label key={index} className='tag_label'>{tag.name}</label>))}
                             </div>
                         }
-                        {item.author &&
+                        {item.author &&item.author[0]&&
                             <span>作者：{item.author[0].name}</span>
                         }
                         {item.rating&&
@@ -228,7 +230,7 @@ const TYPE_LIST =[
                                 评分：{item.rating.average}
                             </span>
                         }
-                        {item.attrs.publisher&&
+                        {item.attrs&&item.attrs.publisher&&
                             <span>发行商：{item.attrs.publisher}</span>
                         }
 

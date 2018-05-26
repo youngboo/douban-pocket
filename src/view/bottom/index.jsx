@@ -11,7 +11,7 @@ class Bottom extends Component {
       this.list = TYPE_LIST.map((item,index)=>{
           let icon = this.index === item.index ? item.icon+'_blue.png':item.icon+'.png'
           return(
-              <div className='bottom_item'
+              <div className={'bottom_item flex-'+TYPE_LIST.length}
                            key={index}
                            onClick={()=>{
                                this.props.onChange(index)
