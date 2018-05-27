@@ -10,15 +10,6 @@ class Util {
         .catch(e => reject(e))
     })
   }
-
-  // static fetchGet (url) {
-  //   return new Promise(function (resolve, reject) {
-  //     fetch(url)
-  //       .then(response => resolve(response))
-  //       .catch((e) => reject(e))
-  //   })
-  // }
-
   static cache (key, value) {
     store.set(key, value)
   }

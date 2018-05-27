@@ -22,7 +22,7 @@ class List extends React.PureComponent {
     service.findByType(url, this.props.type.list_name)
       .then((page) => {
         this.props.type.page = page
-        if (page.count === 0) {
+        if (page.total === 0) {
           this.setState({
             find: false
           })
@@ -49,7 +49,7 @@ class List extends React.PureComponent {
     this.setState({
       pullHeight: 0,
       pullText: '',
-      pushText: this.pushText[1]
+      pushText: this.canPullLoad ? this.pushText[0] : this.pushText[1]
     })
   }
 
@@ -139,9 +139,9 @@ class List extends React.PureComponent {
       pullHeight: 0
     })
   }
-  initPushState () {
+  refreshPushState () {
     this.setState({
-      pushText: this.pushText[1]
+      pushText: this.canPullLoad ? this.pushText[0] : this.pushText[1]
     })
   }
   handleTouchEnd (ev) {
@@ -174,15 +174,13 @@ class List extends React.PureComponent {
       })
       this.handlePullData()
     } else {
-      this.initPushState()
+      this.refreshPushState()
     }
   }
   handlePullData () {
     if (this.props.type.page.count >= this.props.type.page.total) {
-      this.setState({
-        pushText: this.pushText[1]
-      })
-      return
+        this.refreshPushState()
+        return
     }
     service.pullData(this.props.url, this.props.type.page, this.props.type.list_name)
       .then((page) => {
@@ -282,17 +280,18 @@ class List extends React.PureComponent {
       this.url = url
     }
 
-    let items = this.state.items
-    let itemRender
-    if (items && items.length > 0) {
-      itemRender = items.map((item) => {
-        return this.props.type.list_tmpl(item, this)
-      })
-    }
+
     let render
     if (!url || url === '') {
       render = this.renderInit()
     } else if (this.state.find) {
+        let items = this.state.items
+        let itemRender
+        if (items && items.length > 0) {
+            itemRender = items.map((item) => {
+                return this.props.type.list_tmpl(item, this)
+            })
+        }
       render = this.renderList(itemRender)
     } else if (!this.state.find) {
       render = this.renderNotFound()
