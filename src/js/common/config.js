@@ -155,16 +155,14 @@ const TYPE_LIST = [
           <h3>演员</h3>
           <div className='detail_directors'>
             {item.casts &&
-                        item.casts.map((cat, index) => (
-                          cat.avatars && (
-                            <div key={index} className={'director_img flex-' + item.casts.length}>
-                              <img src={cat.avatars.small} />
-                              <span className='ellipsis_span'>{cat.name}</span>
-                            </div>
-                          )
-
-                        ))
-
+              item.casts.map((cat, index) => (
+                cat.avatars && (
+                  <div key={index} className={'director_img flex-' + item.casts.length}>
+                    <img src={cat.avatars.small} />
+                    <span className='ellipsis_span'>{cat.name}</span>
+                  </div>
+                )
+              ))
             }
           </div>
         </div>
