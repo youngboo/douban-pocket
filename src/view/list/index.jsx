@@ -179,8 +179,8 @@ class List extends React.PureComponent {
   }
   handlePullData () {
     if (this.props.type.page.count >= this.props.type.page.total) {
-        this.refreshPushState()
-        return
+      this.refreshPushState()
+      return
     }
     service.pullData(this.props.url, this.props.type.page, this.props.type.list_name)
       .then((page) => {
@@ -280,18 +280,17 @@ class List extends React.PureComponent {
       this.url = url
     }
 
-
     let render
     if (!url || url === '') {
       render = this.renderInit()
     } else if (this.state.find) {
-        let items = this.state.items
-        let itemRender
-        if (items && items.length > 0) {
-            itemRender = items.map((item) => {
-                return this.props.type.list_tmpl(item, this)
-            })
-        }
+      let items = this.state.items
+      let itemRender
+      if (items && items.length > 0) {
+        itemRender = items.map((item) => {
+          return this.props.type.list_tmpl(item, this)
+        })
+      }
       render = this.renderList(itemRender)
     } else if (!this.state.find) {
       render = this.renderNotFound()
