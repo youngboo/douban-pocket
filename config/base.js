@@ -1,5 +1,4 @@
 var path = require('path')
-var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -39,14 +38,13 @@ module.exports = {
       // 打包后文件名称，会自动放到 output 指定的 dist 目录
       filename: 'index.html'
     }),
-      new ExtractTextPlugin('common.css'),
-      new CopyWebpackPlugin([
-          {
-              from: './static',
-              to: './static'
-          },
+    new ExtractTextPlugin('common.css'),
+    new CopyWebpackPlugin([
+      {
+        from: './static',
+        to: './static'
+      }
 
-      ])
+    ])
   ]
 }
-

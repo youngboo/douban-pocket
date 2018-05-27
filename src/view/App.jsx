@@ -31,8 +31,8 @@ class App extends React.PureComponent {
     if (this.searchValue) {
       this.url = this.getSearchUrl(searchValue)
       this.setState({
-          url: this.url,
-          index: this.type.index
+        url: this.url,
+        index: this.type.index
       })
     }
   }

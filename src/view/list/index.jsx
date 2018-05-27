@@ -234,49 +234,48 @@ class List extends React.PureComponent {
 
     }
   }
-  renderInit(){
-      return (
-          <main className='content flex-1 list no-search'>
-              <div className='not-find'>
-                  <h3>在搜索框输入内容进行查找</h3>
-              </div>
-          </main>
-      )
+  renderInit () {
+    return (
+      <main className='content flex-1 list no-search'>
+        <div className='not-find'>
+          <h3>在搜索框输入内容进行查找</h3>
+        </div>
+      </main>
+    )
   }
-  renderNotFound(){
-      return(
-          <main className='content flex-1 list no-search'>
-               <div className='not-find'>
-                <h3>搜索</h3>
-                <span>没有找到相关内容，换个搜索词试试吧。</span>
-              </div>
-          </main>
-      )
+  renderNotFound () {
+    return (
+      <main className='content flex-1 list no-search'>
+        <div className='not-find'>
+          <h3>搜索</h3>
+          <span>没有找到相关内容，换个搜索词试试吧。</span>
+        </div>
+      </main>
+    )
   }
-  renderList(itemRender){
-      return(
-          <main className='content flex-1 list'
-                onTouchStart={this.handleTouchStart.bind(this)}
-                onTouchMove={this.handleTouchMove.bind(this)}
-                onTouchEnd={this.handleTouchEnd.bind(this)}
-                onScroll={this.handleScroll.bind(this)}
-                ref={(div) => { this.listDiv = div }}
-          >
-              <div className={this.state.pullText === '' ? 'pull_div hide' : 'pull_div'}>
-                  <span>{this.state.pullText}</span>
-              </div>
-              <div className='list_content' style={{ paddingTop: this.state.pullHeight }}>
-                  {itemRender}
-              </div>
-              <div className='push_div'>
-                  <span>{this.state.pushText}</span>
-              </div>
-          </main>
-      )
+  renderList (itemRender) {
+    return (
+      <main className='content flex-1 list'
+        onTouchStart={this.handleTouchStart.bind(this)}
+        onTouchMove={this.handleTouchMove.bind(this)}
+        onTouchEnd={this.handleTouchEnd.bind(this)}
+        onScroll={this.handleScroll.bind(this)}
+        ref={(div) => { this.listDiv = div }}
+      >
+        <div className={this.state.pullText === '' ? 'pull_div hide' : 'pull_div'}>
+          <span>{this.state.pullText}</span>
+        </div>
+        <div className='list_content' style={{ paddingTop: this.state.pullHeight }}>
+          {itemRender}
+        </div>
+        <div className='push_div'>
+          <span>{this.state.pushText}</span>
+        </div>
+      </main>
+    )
   }
 
   render () {
-
     let url = this.props.url
     if (url && url !== '' && url !== this.url) {
       this.initDataByUrl(url)
@@ -284,17 +283,17 @@ class List extends React.PureComponent {
     }
 
     let items = this.state.items
-      let itemRender
-      if (items && items.length > 0) {
-          itemRender = items.map((item) => {
-              return this.props.type.list_tmpl(item, this)
-          })
-      }
+    let itemRender
+    if (items && items.length > 0) {
+      itemRender = items.map((item) => {
+        return this.props.type.list_tmpl(item, this)
+      })
+    }
     let render
     if (!url || url === '') {
       render = this.renderInit()
     } else if (this.state.find) {
-      render =this.renderList(itemRender)
+      render = this.renderList(itemRender)
     } else if (!this.state.find) {
       render = this.renderNotFound()
     }
