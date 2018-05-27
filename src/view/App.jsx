@@ -10,19 +10,16 @@ const service = AsyncDataService.getInstance()
 class App extends React.PureComponent {
   constructor () {
     super()
-    this.typeList = TYPE_LIST
-    this.defaultIndex = CONFIG.default
     this.state = {
       items: [],
       active: false,
       info: undefined,
-      defaultIndex: this.defaultIndex,
-      index: 0,
+      index: CONFIG.default,
       showMain: true,
       url: ''
 
     }
-    this.type = this.typeList[this.defaultIndex]
+    this.type = TYPE_LIST[CONFIG.default]
     this.url = ''
   }
 
@@ -41,10 +38,9 @@ class App extends React.PureComponent {
   }
 
   switchType (type) {
-    this.type = this.typeList[type]
-    this.defaultIndex = this.type.index
+    this.type = TYPE_LIST[type]
     this.setState({
-      defaultIndex: this.defaultIndex,
+      index: this.type.index,
       url: this.url
     })
     this.handleSearchChange(this.searchValue)
@@ -75,7 +71,7 @@ class App extends React.PureComponent {
           />
 
           <footer className='footer'>
-            <Bottom defaultIndex={this.state.defaultIndex} onChange={this.switchType.bind(this)} />
+            <Bottom index={this.state.index} onChange={this.switchType.bind(this)} />
           </footer>
 
         </div>

@@ -34,6 +34,7 @@
     justify-content:center;
     align-items: center;
     border: 1px solid #c8cccf;
+    cursor: pointer;
 }
 .input_search{
     width:70%;

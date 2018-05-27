@@ -215,7 +215,7 @@ class List extends React.PureComponent {
             pullHeight: 0,
             pullText: ''
           })
-        }, 1000)
+        }, 600)
       })
   }
   handleScroll () {

@@ -4,10 +4,9 @@ import './style.css'
 class Bottom extends Component {
   constructor (props) {
     super(props)
-    this.index = this.props.index
   }
   render () {
-    this.index = this.props.defaultIndex
+    this.index = this.props.index
     this.list = TYPE_LIST.map((item, index) => {
       let icon = this.index === item.index ? item.icon + '_blue.png' : item.icon + '.png'
       return (

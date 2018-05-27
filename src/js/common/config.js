@@ -1,7 +1,7 @@
 import React from 'react'
 const CONFIG = {
   auto_load: true,
-  default: 1,
+  default: 0,
   book: 'https://api.douban.com/v2/book/',
   movie: 'https://api.douban.com/v2/movie/subject/',
   music: 'https://api.douban.com/v2/music/',
@@ -108,12 +108,6 @@ const TYPE_LIST = [
           {item.genres &&
           <span className='item_tag'>
             {item.genres.map((tag, index) => (<label key={index} className='tag_label'>{tag}</label>))}
-          </span>
-          }
-
-          {item.directors &&
-          <span>
-            {item.directors.map((tag, index) => (<label key={index} className='director_label'>{tag.name}</label>))}
           </span>
           }
           {item.directors && item.directors[0] &&
@@ -223,7 +217,7 @@ const TYPE_LIST = [
               </div>
             }
             {item.author && item.author[0] &&
-              <span>作者：{item.author[0]}</span>
+              <span>作者：{item.author[0].name}</span>
             }
             {item.rating &&
               <span>
