@@ -8,7 +8,7 @@ class ShowDetail extends Component {
     let type = TYPE_LIST[this.props.index]
 
     if (info) {
-      view = type.detail_tmpl.call(this, info)
+      view = type.detail_tmpl(info)
     } else {
       view =
         <div>

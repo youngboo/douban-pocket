@@ -52,8 +52,8 @@ const TYPE_LIST = [
           <div className='item_right'>
             <span >名称：{item.title}</span>
 
-            {item.author &&
-              (<span>作者：{item.author[0]}</span>)
+            {item.author && item.author[0] &&
+              (<span>作者：{item.author[0] + ''}</span>)
             }
             {item.rating &&
               <span>
@@ -105,7 +105,7 @@ const TYPE_LIST = [
         <img className='item_left' src={item.images ? item.images.small : 'static/img/movie-default.png'} />
         <div className='item_right '>
           <span className='item_right_title'>{item.title}—{item.year}</span>
-          {item.genres &&
+          {item.genres && item.genres.length > 0 &&
           <span className='item_tag'>
             {item.genres.map((tag, index) => (<label key={index} className='tag_label'>{tag}</label>))}
           </span>
@@ -135,7 +135,7 @@ const TYPE_LIST = [
             <div className='item_right'>
               <div className='item_genres'>
                 <span className='tag_span'>名称：{item.title}</span>
-                {item.genres && item.genres.map((tag, index) => (<tag_label key={index} className='tag_label'>{tag}</tag_label>))}
+                {item.genres && item.genres.length > 0 && item.genres.map((tag, index) => (<tag_label key={index} className='tag_label'>{tag}</tag_label>))}
               </div>
               <span>上映时间：{item.year}</span>
 
@@ -208,7 +208,7 @@ const TYPE_LIST = [
           <img className='item_left' src={item.image} />
           <div className='item_right'>
 
-            {item.tags &&
+            {item.tags && item.tags.length > 0 &&
               <div className='item_tag'>
                 <span className='tag_span'>名称：{item.title}</span>
                 {item.tags.map((tag, index) => (<label key={index} className='tag_label'>{tag.name}</label>))}
