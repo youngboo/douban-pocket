@@ -4,6 +4,7 @@
     align-items: center;
     flex-wrap: nowrap;
     height: 60px;
+    margin-top: 0.5em;
 }
 /*.search .input_div {*/
     /*width: 70%;*/

@@ -165,7 +165,7 @@ const TYPE_LIST = [
                           cat.avatars && (
                             <div key={index} className={'director_img flex-' + item.casts.length}>
                               <img src={cat.avatars.small} />
-                              <span>{cat.name}</span>
+                              <span className='ellipsis_span'>{cat.name}</span>
                             </div>
                           )
 
