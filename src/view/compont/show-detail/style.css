@@ -99,13 +99,13 @@ p{text-indent:2em;}
 .director_img{
     display: inline-flex;
     flex-direction: column;
-    flex: 1;
+    flex:0 1 auto;
     padding: 0.5em;
     justify-content: center;
     align-items: center;
 }
 .director_img img{
-    width:50px;
+    width:100%;
     border-radius: 100%;
 }
 .movie_detail .item_genres{

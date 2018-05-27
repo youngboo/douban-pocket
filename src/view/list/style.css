@@ -20,6 +20,8 @@
 .no-search{
     padding: 2em;
     display:flex;
+    align-items: flex-start;
+    justify-content: stretch;
 }
 .list .hide{
     display: none;

@@ -15,7 +15,7 @@ class App extends React.PureComponent {
     this.state = {
       items: [],
       active: false,
-      info: {},
+      info: undefined,
       defaultIndex: this.defaultIndex,
       index: 0,
       showMain: true,
@@ -28,11 +28,13 @@ class App extends React.PureComponent {
 
   handleSearchChange (searchValue) {
     this.searchValue = searchValue
-    this.url = this.getSearchUrl(searchValue)
-    this.setState({
-      url: this.url,
-      index: this.type.index
-    })
+    if (this.searchValue) {
+      this.url = this.getSearchUrl(searchValue)
+      this.setState({
+          url: this.url,
+          index: this.type.index
+      })
+    }
   }
   getSearchUrl (searchValue) {
     return this.type.url + searchValue

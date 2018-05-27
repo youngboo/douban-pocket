@@ -6,6 +6,7 @@ class ShowDetail extends Component {
     let view
     let info = this.props.info
     let type = TYPE_LIST[this.props.index]
+
     if (info) {
       view = type.detail_tmpl.call(this, info)
     } else {
