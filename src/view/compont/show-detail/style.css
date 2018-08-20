@@ -116,6 +116,8 @@ p{text-indent:2em;}
 .movie_detail .item_genres{
     display:flex;
     flex-wrap:wrap;
+    align-items:center;
+    justify-content: flex-start;
 }
 .item_genres .tag_span{
     width:auto;
@@ -123,6 +125,7 @@ p{text-indent:2em;}
 }
 .item_genres .tag_label{
     background: red;
+    width: max-content;
 }
 
 /*music detail*/

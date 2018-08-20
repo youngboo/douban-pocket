@@ -135,7 +135,7 @@ const TYPE_LIST = [
             <div className='item_right'>
               <div className='item_genres'>
                 <span className='tag_span'>名称：{item.title}</span>
-                {item.genres && item.genres.length > 0 && item.genres.map((tag, index) => (<tag_label key={index} className='tag_label'>{tag}</tag_label>))}
+                {item.genres && item.genres.length > 0 && item.genres.map((tag, index) => (<span key={index} className='tag_label'>{tag}</span>))}
               </div>
               <span>上映时间：{item.year}</span>
 

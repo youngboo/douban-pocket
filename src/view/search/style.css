@@ -43,6 +43,6 @@
     border:1px solid #c8cccf;
 }
 .input_search img{
-    max-width:50px;
-    flex: auto;
+    width:50px;
+    flex: 0 1 auto;
 }
